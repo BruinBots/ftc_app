@@ -67,18 +67,17 @@ public class HardwareBruinBot
     public DcMotor  leftRearDrive = null;
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
-    public DcMotor  landerLatchLift = null;
-    public DcMotor  armExtend = null;
-    public DcMotor  armRotate = null;
-    public CRServo    leftMineral = null;
-    public CRServo    rightMineral = null;
-    public DigitalChannel extendArmBackStop;
-    public DigitalChannel extendArmFrontStop;
+    //public DcMotor  leftIntakeMotor = null;
+//    public DcMotor  rightIntakeMotor = null;
+//    public DcMotor  lowerArmMotor = null;
+//    public DcMotor upperArmMotor = null
+//    public CRServo    rampServo = null;
+//    public DigitalChannel extendArmBackStop;
+//    public DigitalChannel extendArmFrontStop;
 
-    public ModernRoboticsI2cRangeSensor rangeSensor;
-    public ModernRoboticsI2cGyro gyro;
-    public ColorSensor colorSensor;
-    public AnalogInput sonarSensor;
+//    public ModernRoboticsI2cRangeSensor rangeSensor;
+//    public ColorSensor colorSensor;
+//    public AnalogInput sonarSensor;
 
 
     public static final double MID_SERVO       =  0.5 ;
