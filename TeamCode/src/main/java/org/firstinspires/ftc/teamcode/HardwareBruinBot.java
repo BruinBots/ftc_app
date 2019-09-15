@@ -59,6 +59,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
+//skystone hardwaremap
 public class HardwareBruinBot
 {
     /* Public OpMode members. */
@@ -104,24 +105,26 @@ public class HardwareBruinBot
         leftRearDrive  = hwMap.get(DcMotor.class, "leftRearDrive");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
         rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
-        landerLatchLift = hwMap.get(DcMotor.class, "landerLatchLift");
-        armExtend = hwMap.get(DcMotor.class, "armExtend");
-        armRotate = hwMap.get(DcMotor.class, "armRotate");
+        //landerLatchLift = hwMap.get(DcMotor.class, "landerLatchLift");
+        //armExtend = hwMap.get(DcMotor.class, "armExtend");
+        //armRotate = hwMap.get(DcMotor.class, "armRotate");
 
-        rightMineral = hwMap.get(CRServo.class, "rightMineral");
+        //rightMineral = hwMap.get(CRServo.class, "rightMineral");
 
-        extendArmBackStop = hwMap.get(DigitalChannel.class, "extendArmBackStop");
-        extendArmFrontStop = hwMap.get(DigitalChannel.class, "extendArmFrontStop");
-        extendArmBackStop.setMode(DigitalChannel.Mode.INPUT);
-        extendArmFrontStop.setMode(DigitalChannel.Mode.INPUT);
+        //extendArmBackStop = hwMap.get(DigitalChannel.class, "extendArmBackStop");
+        //extendArmFrontStop = hwMap.get(DigitalChannel.class, "extendArmFrontStop");
+        //extendArmBackStop.setMode(DigitalChannel.Mode.INPUT);
+        //extendArmFrontStop.setMode(DigitalChannel.Mode.INPUT);
 
         // Initialize I2C Sensors
         //colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
-        gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        //rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
+        //we are using the gyro from rev expansion hub
+        //FIXME figure out how to use gyro from hub
+        //gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
 
         // Initialize Analog Sonar Sensor
-        sonarSensor = hwMap.get(AnalogInput.class,"sonarSensor");
+        //sonarSensor = hwMap.get(AnalogInput.class,"sonarSensor");
 
 
         // armExt = hwMap.get(DcMotor.class, "armExt"); //arm extension
@@ -138,9 +141,9 @@ public class HardwareBruinBot
         leftRearDrive.setPower(0);
         rightFrontDrive.setPower(0);
         rightRearDrive.setPower(0);
-        armExtend.setPower(0);
-        armRotate.setPower(0);
-        landerLatchLift.setPower(0);
+        //armExtend.setPower(0);
+        //armRotate.setPower(0);
+        //landerLatchLift.setPower(0);
 
 
         // Set all motors to run without encoders.
@@ -150,14 +153,14 @@ public class HardwareBruinBot
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //armExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //armRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        landerLatchLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        landerLatchLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //landerLatchLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //landerLatchLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         // Set the LED on
