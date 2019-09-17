@@ -1,16 +1,26 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous (name = "AutoJustLand", group = "Rohan")
-public class AutoJustLand extends LinearOpMode {
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+
+@Autonomous (name = "Auto Start Near Crater", group = "Rohan")
+@Disabled
+public class AutoStartNearCrater extends LinearOpMode {
 
     HardwareBruinBot robot = new HardwareBruinBot();
 
@@ -30,11 +40,6 @@ public class AutoJustLand extends LinearOpMode {
 
     private GoldAlignDetector detector;
 
-
-    /*  private static final String VUFORIA_KEY = "AU8YYQn/////AAAAGXFrahulqEjulTTNdLAcySmHbygwS4xr5RSUhekqrTcj7ErEbW1t0GxYBrB1fZFvZQcM3NCjk0dHuDH0I5cqwrblwH33sSHg0IO6XB9zE60YKnY2UiLPE8H9DQLAZjBoAAoOoNhJJQuFD2+hxs0vU74jNqyvyvsGUqqHQ7aj2EMCEbP4p6xElobK2w374MQsFvtnviNJ/pGZxeFlzta1W/DXRpq7xJY9+1eheCOGrRrkzIvS5i/L/nb9OKUP5kwJefb4oi0wMi7O1xxSMfUq+Aq1JfI4sXTXgLM/Z7dPb9zod+x8Kl9GnJ2e43OUGYqChmcpKKH0SguasN741T3zcrs1+iynm9ATD4NOk87F56xT";
-      VuforiaLocalizer vuforia;
-      private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-  */
     private ElapsedTime runtime = new ElapsedTime();
     //public boolean found() { return GoldAlignExample.isFound(); }
     //public boolean isAligned() { return detector.getAligned(); }
@@ -47,13 +52,15 @@ public class AutoJustLand extends LinearOpMode {
         robot.init(hardwareMap);
         robot.gyro.calibrate();
         // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && robot.gyro.isCalibrating())  {
+        while (!isStopRequested() && robot.gyro.isCalibrating()) {
             sleep(50);
             idle();
-        }
+            if (isStopRequested()) stop();
 
-/*
-        //Variable setting rotation angle;
+        }
+        if (isStopRequested()) stop();
+
+/*        //Variable setting rotation angle;
         detector = new GoldAlignDetector();
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         detector.useDefaults();
@@ -80,68 +87,139 @@ public class AutoJustLand extends LinearOpMode {
             // Put things to do prior to start in here
             telemetry.addData(">", "Robot Heading = %d", robot.gyro.getIntegratedZValue());
             telemetry.update();
+            if (isStopRequested()) stop();
+
         }
-        //start landing here
-        int landingLevel = -2090;  // Target level to land
-        double latchPower;
-        //Reset the Encoder
-        robot.landerLatchLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // Lower the robot
-        while (robot.landerLatchLift.getCurrentPosition()> landingLevel){
-            robot.landerLatchLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            latchPower = -0.2;
-            robot.landerLatchLift.setPower(latchPower);
-        }
-        robot.landerLatchLift.setPower(0);
-
-
-        // Find the Gold mineral and knock it off the spot
-        // Initialize a counter to count our attempts to get a little closer to the mineral
-/*        double mineralCt = 0;
-        boolean bumpSuccess = false;
-        // Strafe a little closer to the minerals
-        //gyroStrafe(0.5,0);
-        //sleep(500);
-        stopBot();
-
-        while (mineralCt <1 && !bumpSuccess) {
-            sleep(200); // Give the detector a second to register the cube
-            if (detector.isFound()) {
-                telemetry.addLine("Found it, going to mineralBump");
-                telemetry.addData("mineralCt = ", mineralCt);
-                telemetry.update();
-                sleep(2000);
-                bumpSuccess = mineralBump(1);
-            } else {
-                //gyroSpin(-12);  // Spin to the left to look for the mineral
-                gyroHold(-0.4, 0,.9);
-                sleep(2000);
-                if (detector.isFound()) {
-                    bumpSuccess = mineralBump(1);
-                } else {
-                    //gyroSpin(12);  // Spin to the right to look for the mineral
-                    gyroHold(0.4, 0,1.8);
-                    sleep(2000);
-
-                    if (detector.isFound()) {
-                        bumpSuccess = mineralBump(1);
-                    }
-                }
-            }
-            if (!bumpSuccess) {
-                mineralCt = mineralCt + 1;
-                //gyroSpin(0);
-                //moveBot(0,0,0.5,0.5);
-                //sleep(1000);
-                stopBot();
+        while (opModeIsActive()) {
+            int landingLevel = -3050;  // Target level to land
+            double latchPower;
+            //Reset the Encoder
+            robot.landerLatchLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //Lower the Robot from the lander
+            while (!isStopRequested() && robot.landerLatchLift.getCurrentPosition() > landingLevel) {
+                robot.landerLatchLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                latchPower = -0.2;
+                robot.landerLatchLift.setPower(latchPower);
 
             }
-        }
-*/
-        // Move  back to unhook the robot
-        gyroHold(-0.5,0,0.15);
+            robot.landerLatchLift.setPower(0);
+            if (isStopRequested()) {stop(); sleep(5000);}
+            //Clear the hook
+            gyroHold(-0.5, 0, 0.22);
+            // Move away from the lander
+            gyroStrafe(0.5, 0);
+            sleep(1000);
+            stopBot();
+            gyroSpin(0);
+            if (isStopRequested()) {stop(); sleep(5000);}
+            // Move closer to the wall
+            gyroHold(0.4, 0, 1.5);
 
+            // Rotate to a heading of 315R
+            gyroSpin(315);
+
+
+            // Move towards the wall until 7 inches away while maintaining a heading of 270
+            while (!isStopRequested() && robot.rangeSensor.getDistance(DistanceUnit.INCH) > 7) {
+                gyroStrafe(.5, 315);
+            }
+            stopBot();
+            if (isStopRequested()) {stop(); sleep(5000);}
+            gyroSpin(315);
+
+            //Drive backwards maintaining 2-4 inches from the wall
+            while (!isStopRequested() && sonarDistance() > 18) {
+                double wsteer = wallSteer(5);
+                moveBot(0.2, 0, wsteer, 0.5);
+            }
+            stopBot();
+            if (isStopRequested()) {stop(); sleep(5000);}            //detector.disable();
+
+            int dropTarget = 3200;  // Target for dropping totem
+            int levelTarget = 400;  // Target for holding arm forward and level
+            double rotatePower;
+            //Reset the Encoder
+            robot.armRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //Rotate the arm to level position
+            while (!isStopRequested() && robot.armRotate.getCurrentPosition() < levelTarget) {
+                robot.armRotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rotatePower = 0.25;
+                robot.armRotate.setPower(rotatePower);
+            }
+            if (isStopRequested()) {stop(); sleep(5000);}            robot.armRotate.setPower(0);
+            //Drop the Totem
+            robot.rightMineral.setPower(0.7);
+            sleep(1000);
+            robot.rightMineral.setPower(0);
+
+
+            if (isStopRequested()) {stop(); sleep(5000);}
+            gyroSpin(315);
+
+            // Let's try wall crawling for a time, then turning and homing on the crater with the distance sensor
+            while (!isStopRequested() && sonarDistance() < 72) {
+                double wsteer = wallSteer(7);
+                moveBot(-0.25, 0, wsteer, 0.5);
+            }
+            stopBot();
+            if (isStopRequested()) {stop(); sleep(5000);}
+            gyroSpin(315);
+            //Rotate the arm over the crater
+            while (!isStopRequested() && robot.armRotate.getCurrentPosition() < dropTarget) {
+                robot.armRotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rotatePower = 0.25;
+                robot.armRotate.setPower(rotatePower);
+            }
+            robot.armRotate.setPower(0);
+            if (isStopRequested()) {stop(); sleep(5000);}
+
+            //  Extend the arm
+            while (!isStopRequested() && robot.extendArmFrontStop.getState() == false) { // As long as the front limit switch isn't pressed, move the arm forward
+
+                robot.armExtend.setPower(-0.15);
+            }
+            robot.armExtend.setPower(0);  // Otherwise set the power to zero
+            if (isStopRequested()) {stop(); sleep(5000);}
+
+        break;
+        }
+
+        stop();
     }
+
+
+    /*public void moveToEncoder (double clicks) {
+        double drivePower;
+        robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        if (clicks > 0) {
+            drivePower = 0.3;
+            while (robot.rightFrontDrive.getCurrentPosition()<clicks) {
+                robot.rightFrontDrive.setPower(drivePower);
+                robot.leftFrontDrive.setPower(drivePower);
+                robot.rightRearDrive.setPower(drivePower);
+                robot.leftRearDrive.setPower(drivePower);
+            }
+
+
+        }
+        else {
+            drivePower = -0.3;
+            while (robot.rightFrontDrive.getCurrentPosition()>clicks) {
+                robot.rightFrontDrive.setPower(drivePower);
+                robot.leftFrontDrive.setPower(drivePower);
+                robot.rightRearDrive.setPower(drivePower);
+                robot.leftRearDrive.setPower(drivePower);
+            }
+
+
+        }
+        robot.rightFrontDrive.setPower(0);
+        robot.leftFrontDrive.setPower(0);
+        robot.rightRearDrive.setPower(0);
+        robot.leftRearDrive.setPower(0);
+    }*/
 
 
     public void moveBot(double drive, double rotate, double strafe, double scaleFactor)
@@ -201,7 +279,7 @@ public class AutoJustLand extends LinearOpMode {
         double steer = 0;
         steer = robot.rangeSensor.getDistance(DistanceUnit.INCH) - distance;
         steer = (double)Range.clip(steer, -0.25, 0.25);
-        return steer;
+    return steer;
     }
 
     public void gyroSpin(double heading) {
@@ -210,7 +288,7 @@ public class AutoJustLand extends LinearOpMode {
         // Get the current heading error between actual and desired
         double error = getError(heading);
         // While we are greater than 5 degrees from desired heading (5 seems to work best)
-        while (Math.abs(error) > 5) {
+        while (!isStopRequested() && Math.abs(error) > 5) {
             // Rotate the robot in the correct direction.
             // Don't use more than 0.3 input power or it goes too fast
             if (error < 0 && Math.abs(error) > 5) {
@@ -231,17 +309,17 @@ public class AutoJustLand extends LinearOpMode {
 
         double error = getError(heading);
         double deadband = 3;
-        error = getError(heading);
-        if (error < 0 && Math.abs(error) > deadband) {
-            // Nagative error greater than 5 degrees, left of desired heading, input positive rotation
-            moveBot(0, -.25, speed, 0.6);
-        } else if (error > 0 && Math.abs(error) > deadband){
-            // Positive Error greater than 5 degrees, right of desired heading, input negative rotation
-            moveBot(0, 0.25, speed, 0.6);
-        } else {
-            // Robot is on course
-            moveBot(0, 0, speed, 0.6);
-        }
+            error = getError(heading);
+            if (error < 0 && Math.abs(error) > deadband) {
+                // Nagative error greater than 5 degrees, left of desired heading, input positive rotation
+                moveBot(0, -.25, speed, 0.6);
+            } else if (error > 0 && Math.abs(error) > deadband){
+                // Positive Error greater than 5 degrees, right of desired heading, input negative rotation
+                moveBot(0, 0.25, speed, 0.6);
+            } else {
+                // Robot is on course
+                moveBot(0, 0, speed, 0.6);
+            }
 
     }
     /**
@@ -263,7 +341,7 @@ public class AutoJustLand extends LinearOpMode {
         double PCoeff = 0.01;
         // keep looping while we have time remaining.
         holdTimer.reset();
-        while ((holdTimer.time() < holdTime)) {
+        while ((!isStopRequested() && holdTimer.time() < holdTime)) {
             // Update telemetry & Allow time for other processes to run.
             //error = Range.clip(getError(angle),-0.3,0.3);
             error = PCoeff * getError(angle);
