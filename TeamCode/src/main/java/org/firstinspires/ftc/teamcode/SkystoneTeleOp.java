@@ -68,10 +68,14 @@ public class SkystoneTeleOp extends LinearOpMode {
 //        double max;
 
         float drive = 0;
-        float strafe =0;
-        float rotate =0;
-        float rampUp;
-        float rampDown;
+        float strafe = 0;
+        float rotate = 0;
+        float rampUp = 0;
+        float rampDown = 0;
+
+        //boolean lowerArmMotorUp = false;
+        //boolean lowerArmMotorDown = false;
+
 
         ElapsedTime runtime = new ElapsedTime();
 
@@ -92,7 +96,7 @@ public class SkystoneTeleOp extends LinearOpMode {
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        //while (opModeIsActive()) {
 
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
@@ -118,14 +122,33 @@ public class SkystoneTeleOp extends LinearOpMode {
                 rampUp = gamepad2.right_trigger;
                 rampDown = gamepad2.left_trigger;
                 if (rampUp > rampDown) {
-                    robot.rampServoRight.setPower(rampDown);
-                    robot.rampServoLeft.setPower(rampDown);
+                    robot.rampServoRight.setPower(rampUp);
+                    robot.rampServoLeft.setPower(rampUp);
+                    telemetry.addData("Say", "at the rampUp place");
+                    telemetry.update();
                 }
                 else
                 {
-                    robot.rampServoRight.setPower(-rampUp);
-                    robot.rampServoLeft.setPower(-rampUp);
+                    robot.rampServoRight.setPower(-rampDown);
+                    robot.rampServoLeft.setPower(-rampDown);
                 }
+
+//                lowerArmMotorUp = gamepad1.dpad_up;
+//                lowerArmMotorDown = gamepad1.dpad_down;
+//                if (lowerArmMotorUp) {
+//                    robot.lowerArmMotor.setPower(-.1);
+//                }
+//                else{
+//                    robot.lowerArmMotor.setPower(0);
+//                }
+//
+//                if (lowerArmMotorDown) {
+//                    robot.lowerArmMotor.setPower(.1);
+//                }
+//                else {
+//                    robot.lowerArmMotor.setPower(0);
+//                }
+
 
             }
 
@@ -178,7 +201,7 @@ public class SkystoneTeleOp extends LinearOpMode {
 
             // Pace this loop so jaw action is reasonable speed.
 //            sleep(50);
-        }
+        //}
     }
     public void moveBot(double drive, double rotate, double strafe, double scaleFactor)
     {

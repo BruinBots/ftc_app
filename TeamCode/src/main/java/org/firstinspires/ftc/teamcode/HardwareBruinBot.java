@@ -67,6 +67,8 @@ public class HardwareBruinBot
     public DcMotor  leftRearDrive = null;
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
+    public DcMotor  lowerArmMotor = null;
+    public DcMotor  upperArmMotor = null;
 
     public CRServo    rampServoLeft = null;
     public CRServo    rampServoRight = null;
@@ -103,10 +105,14 @@ public class HardwareBruinBot
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftFrontDrive  = hwMap.get(DcMotor.class, "leftFrontDrive");
-        leftRearDrive  = hwMap.get(DcMotor.class, "leftRearDrive");
+        leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontDrive");
+        leftRearDrive = hwMap.get(DcMotor.class, "leftRearDrive");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
         rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
+
+        //lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
+        //upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
+
 
         rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
         rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
