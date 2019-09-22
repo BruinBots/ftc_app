@@ -70,8 +70,6 @@ public class SkystoneTeleOp extends LinearOpMode {
         float drive = 0;
         float strafe =0;
         float rotate =0;
-        float rampServoLeft;
-        float rampServoRight;
         float rampUp;
         float rampDown;
 
@@ -116,7 +114,7 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 //RAMP SECTION
 
-                // Read the triggers and roll the Mineral Servos
+                // Read the triggers and roll the Servos
                 rampUp = gamepad2.right_trigger;
                 rampDown = gamepad2.left_trigger;
                 if (rampUp > rampDown) {
