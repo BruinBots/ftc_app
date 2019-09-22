@@ -70,6 +70,10 @@ public class SkystoneTeleOp extends LinearOpMode {
         float drive = 0;
         float strafe =0;
         float rotate =0;
+        float rampServoLeft;
+        float rampServoRight;
+        float rampUp;
+        float rampDown;
 
         ElapsedTime runtime = new ElapsedTime();
 
@@ -109,6 +113,22 @@ public class SkystoneTeleOp extends LinearOpMode {
                 rotate = gamepad2.right_stick_x;
 
                 moveBot(drive, rotate, strafe, 0.3);
+
+                //RAMP SECTION
+
+                // Read the triggers and roll the Mineral Servos
+                rampUp = gamepad2.right_trigger;
+                rampDown = gamepad2.left_trigger;
+                if (rampUp > rampDown) {
+                    robot.rampServoRight.setPower(rampDown);
+                    robot.rampServoLeft.setPower(rampDown);
+                }
+                else
+                {
+                    robot.rampServoRight.setPower(-rampUp);
+                    robot.rampServoLeft.setPower(-rampUp);
+                }
+
             }
 
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -198,6 +218,10 @@ public class SkystoneTeleOp extends LinearOpMode {
         robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
         robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
         robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
+
+
+
+
 
     }
 }

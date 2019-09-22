@@ -67,6 +67,9 @@ public class HardwareBruinBot
     public DcMotor  leftRearDrive = null;
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
+
+    public CRServo    rampServoLeft = null;
+    public CRServo    rampServoRight = null;
     //public DcMotor  leftIntakeMotor = null;
 //    public DcMotor  rightIntakeMotor = null;
 //    public DcMotor  lowerArmMotor = null;
@@ -104,10 +107,13 @@ public class HardwareBruinBot
         leftRearDrive  = hwMap.get(DcMotor.class, "leftRearDrive");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
         rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
+
+        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
+        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
         //landerLatchLift = hwMap.get(DcMotor.class, "landerLatchLift");
         //armExtend = hwMap.get(DcMotor.class, "armExtend");
         //armRotate = hwMap.get(DcMotor.class, "armRotate");
-
+//right trigger to go up, left trigger to go down
         //rightMineral = hwMap.get(CRServo.class, "rightMineral");
 
         //extendArmBackStop = hwMap.get(DigitalChannel.class, "extendArmBackStop");
