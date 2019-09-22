@@ -73,8 +73,10 @@ public class SkystoneTeleOp extends LinearOpMode {
         float rampUp = 0;
         float rampDown = 0;
 
-        //boolean lowerArmMotorUp = false;
-        //boolean lowerArmMotorDown = false;
+        boolean lowerArmMotorUp = false;
+        boolean lowerArmMotorDown = false;
+        boolean intakeFront = false;
+        boolean intakeBack = false;
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -133,21 +135,40 @@ public class SkystoneTeleOp extends LinearOpMode {
                     robot.rampServoLeft.setPower(-rampDown);
                 }
 
-//                lowerArmMotorUp = gamepad1.dpad_up;
-//                lowerArmMotorDown = gamepad1.dpad_down;
-//                if (lowerArmMotorUp) {
-//                    robot.lowerArmMotor.setPower(-.1);
-//                }
-//                else{
-//                    robot.lowerArmMotor.setPower(0);
-//                }
-//
-//                if (lowerArmMotorDown) {
-//                    robot.lowerArmMotor.setPower(.1);
-//                }
-//                else {
-//                    robot.lowerArmMotor.setPower(0);
-//                }
+                lowerArmMotorUp = gamepad1.dpad_up;
+                lowerArmMotorDown = gamepad1.dpad_down;
+                if (lowerArmMotorUp) {
+                    robot.lowerArmMotor.setPower(-.1);
+                }
+                else{
+                    robot.lowerArmMotor.setPower(0);
+                }
+
+                if (lowerArmMotorDown) {
+                    robot.lowerArmMotor.setPower(.1);
+                }
+                else {
+                    robot.lowerArmMotor.setPower(0);
+                }
+
+                intakeFront = gamepad2.left_bumper;
+                intakeBack = gamepad2.right_bumper;
+                if (intakeBack) {
+                    robot.intakeLeft.setPower(.1);
+                    robot.intakeRight.setPower(-.1);
+                }
+                else {
+                    robot.intakeLeft.setPower(0);
+                    robot.intakeRight.setPower(0);
+                }
+                if (intakeFront) {
+                    robot.intakeLeft.setPower(-.1);
+                    robot.intakeRight.setPower(.1);
+                }
+                else {
+                    robot.intakeLeft.setPower(0);
+                    robot.intakeRight.setPower(0);
+                }
 
 
             }

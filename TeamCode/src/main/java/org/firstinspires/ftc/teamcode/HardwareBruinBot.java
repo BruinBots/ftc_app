@@ -67,8 +67,12 @@ public class HardwareBruinBot
     public DcMotor  leftRearDrive = null;
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
+
     public DcMotor  lowerArmMotor = null;
     public DcMotor  upperArmMotor = null;
+
+    public DcMotor intakeLeft = null;
+    public DcMotor intakeRight = null;
 
     public CRServo    rampServoLeft = null;
     public CRServo    rampServoRight = null;
@@ -112,6 +116,9 @@ public class HardwareBruinBot
 
         //lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
         //upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
+        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
+        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
+
 
 
         rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
