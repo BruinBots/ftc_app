@@ -63,19 +63,19 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
 public class HardwareBruinBot
 {
     /* Public OpMode members. */
-    public DcMotor  leftFrontDrive   = null;
-    public DcMotor  leftRearDrive = null;
-    public DcMotor  rightFrontDrive  = null;
-    public DcMotor  rightRearDrive = null;
+//    public DcMotor  leftFrontDrive   = null;
+//    public DcMotor  leftRearDrive = null;
+//    public DcMotor  rightFrontDrive  = null;
+//    public DcMotor  rightRearDrive = null;
 
     public DcMotor  lowerArmMotor = null;
     public DcMotor  upperArmMotor = null;
 
-    public DcMotor intakeLeft = null;
-    public DcMotor intakeRight = null;
+    //public DcMotor intakeLeft = null;
+    //public DcMotor intakeRight = null;
 
-    public CRServo    rampServoLeft = null;
-    public CRServo    rampServoRight = null;
+//    public CRServo    rampServoLeft = null;
+//    public CRServo    rampServoRight = null;
     //public DcMotor  leftIntakeMotor = null;
 //    public DcMotor  rightIntakeMotor = null;
 //    public DcMotor  lowerArmMotor = null;
@@ -109,20 +109,20 @@ public class HardwareBruinBot
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontDrive");
-        leftRearDrive = hwMap.get(DcMotor.class, "leftRearDrive");
-        rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
-        rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
+//        leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontDrive");
+//        leftRearDrive = hwMap.get(DcMotor.class, "leftRearDrive");
+//        rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
+//        rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
 
         //lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
         //upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
-        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
-        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
+        //intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
+        //intakeRight = hwMap.get(DcMotor.class, "intakeRight");
 
 
 
-        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
-        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
+//        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
+//        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
         //landerLatchLift = hwMap.get(DcMotor.class, "landerLatchLift");
         //armExtend = hwMap.get(DcMotor.class, "armExtend");
         //armRotate = hwMap.get(DcMotor.class, "armRotate");
@@ -147,18 +147,18 @@ public class HardwareBruinBot
 
         // armExt = hwMap.get(DcMotor.class, "armExt"); //arm extension
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
 
 
 
         // Set all motors to zero power
-        leftFrontDrive.setPower(0);
-        leftRearDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        rightRearDrive.setPower(0);
+//        leftFrontDrive.setPower(0);
+//        leftRearDrive.setPower(0);
+//        rightFrontDrive.setPower(0);
+//        rightRearDrive.setPower(0);
         //armExtend.setPower(0);
         //armRotate.setPower(0);
         //landerLatchLift.setPower(0);
@@ -166,10 +166,10 @@ public class HardwareBruinBot
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //armExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

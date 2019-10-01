@@ -59,6 +59,8 @@ public class SkystoneTeleOp extends LinearOpMode {
     //double          clawOffset      = 0;                       // Servo mid position
     //final double    CLAW_SPEED      = 0.02 ;                   // sets rate to move servo
 
+    static final double     COUNTS_PER_MOTOR_REV    = 360 ;
+
     @Override
     public void runOpMode() {
 //        double left;
@@ -67,16 +69,18 @@ public class SkystoneTeleOp extends LinearOpMode {
 //        double turn;
 //        double max;
 
-        float drive = 0;
-        float strafe = 0;
-        float rotate = 0;
-        float rampUp = 0;
-        float rampDown = 0;
-
+//        float drive = 0;
+//        float strafe = 0;
+//        float rotate = 0;
+//        float rampUp = 0;
+//        float rampDown = 0;
+//
         boolean lowerArmMotorUp = false;
         boolean lowerArmMotorDown = false;
-        boolean intakeFront = false;
-        boolean intakeBack = false;
+//        boolean intakeFront = false;
+//        boolean intakeBack = false;
+        boolean upperArmMotorOut = false;
+        boolean upperArmMotorIn = false;
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -111,37 +115,43 @@ public class SkystoneTeleOp extends LinearOpMode {
                     sleep(5000);
                 }
 
-                // DRIVING SECTION!!!! ----------------------------------------------------------------
-                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
-                strafe = -gamepad2.left_stick_x;
-                rotate = gamepad2.right_stick_x;
+//                // DRIVING SECTION!!!! ----------------------------------------------------------------
+//                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
+//                strafe = -gamepad2.left_stick_x;
+//                rotate = gamepad2.right_stick_x;
+//
+//                moveBot(drive, rotate, strafe, 0.3);
+//
+//                //RAMP SECTION
+//
+////                // Read the triggers and roll the Servos
+//                rampUp = gamepad2.right_trigger;
+//                rampDown = gamepad2.left_trigger;
+//                if (rampUp > rampDown) {
+//                    robot.rampServoRight.setPower(-rampUp);
+//                    robot.rampServoLeft.setPower(rampUp);
+//
+//                }
+//                else
+//                {
+//                    robot.rampServoRight.setPower(rampDown);
+//                    robot.rampServoLeft.setPower(-rampDown);
+//                }
 
-                moveBot(drive, rotate, strafe, 0.3);
+//                telemetry.addData("upper arm Encoder:", robot.upperArmMotor.getCurrentPosition());
+//                telemetry.addData("lower arm Encoder:", robot.lowerArmMotor.getCurrentPosition());
+//                telemetry.update();
+//                telemetry.addData("lower arm Encoder:", robot.upperArmMotor.getCurrentPosition());
 
-                //RAMP SECTION
 
-                // Read the triggers and roll the Servos
-                rampUp = gamepad2.right_trigger;
-                rampDown = gamepad2.left_trigger;
-                if (rampUp > rampDown) {
-                    robot.rampServoRight.setPower(rampUp);
-                    robot.rampServoLeft.setPower(rampUp);
-                    telemetry.addData("Say", "at the rampUp place");
-                    telemetry.update();
-                }
-                else
-                {
-                    robot.rampServoRight.setPower(-rampDown);
-                    robot.rampServoLeft.setPower(-rampDown);
-                }
-
-                lowerArmMotorUp = gamepad1.dpad_up;
-                lowerArmMotorDown = gamepad1.dpad_down;
+                lowerArmMotorUp = gamepad2.dpad_up;
+                lowerArmMotorDown = gamepad2.dpad_down;
                 if (lowerArmMotorUp) {
                     robot.lowerArmMotor.setPower(-.1);
                 }
                 else{
                     robot.lowerArmMotor.setPower(0);
+
                 }
 
                 if (lowerArmMotorDown) {
@@ -151,24 +161,46 @@ public class SkystoneTeleOp extends LinearOpMode {
                     robot.lowerArmMotor.setPower(0);
                 }
 
-                intakeFront = gamepad2.left_bumper;
-                intakeBack = gamepad2.right_bumper;
-                if (intakeBack) {
-                    robot.intakeLeft.setPower(.1);
-                    robot.intakeRight.setPower(-.1);
+                upperArmMotorOut=gamepad2.dpad_right;
+                upperArmMotorIn=gamepad2.dpad_left;
+
+
+
+                if (upperArmMotorOut) {
+                    robot.upperArmMotor.setPower(.1);
+                }
+                else{
+                    robot.upperArmMotor.setPower(0);
+
+                }
+
+                if (upperArmMotorIn) {
+
+                    robot.upperArmMotor.setPower(-.1);
                 }
                 else {
-                    robot.intakeLeft.setPower(0);
-                    robot.intakeRight.setPower(0);
+                    robot.upperArmMotor.setPower(0);
                 }
-                if (intakeFront) {
-                    robot.intakeLeft.setPower(-.1);
-                    robot.intakeRight.setPower(.1);
-                }
-                else {
-                    robot.intakeLeft.setPower(0);
-                    robot.intakeRight.setPower(0);
-                }
+
+
+//                intakeFront = gamepad2.left_bumper;
+//                intakeBack = gamepad2.right_bumper;
+//                if (intakeBack) {
+//                    //robot.intakeLeft.setPower(.1);
+//                    //robot.intakeRight.setPower(-.1);
+//                }
+//                else {
+//                    //robot.intakeLeft.setPower(0);
+//                    //robot.intakeRight.setPower(0);
+//                }
+//                if (intakeFront) {
+//                    //robot.intakeLeft.setPower(-.1);
+//                    //robot.intakeRight.setPower(.1);
+//                }
+//                else {
+//                    //robot.intakeLeft.setPower(0);
+//                    //robot.intakeRight.setPower(0);
+//                }
 
 
             }
@@ -256,10 +288,10 @@ public class SkystoneTeleOp extends LinearOpMode {
             }
         }
         // Send the normalized values to the wheels, further scaled by the user
-        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
-        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
-        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
-        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
+//        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
+//        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
+//        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
+//        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
 
 
 
