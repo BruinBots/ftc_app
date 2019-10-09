@@ -81,6 +81,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 //        boolean intakeBack = false;
         boolean upperArmMotorOut = false;
         boolean upperArmMotorIn = false;
+        boolean clawOpen = false;
+        boolean clawClose = false;
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -146,6 +148,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 lowerArmMotorUp = gamepad2.dpad_up;
                 lowerArmMotorDown = gamepad2.dpad_down;
+                telemetry.addData("say", "at the lower arm motor place");
+                telemetry.update();
                 if (lowerArmMotorUp) {
                     robot.lowerArmMotor.setPower(-.1);
                 }
@@ -163,8 +167,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 upperArmMotorOut=gamepad2.dpad_right;
                 upperArmMotorIn=gamepad2.dpad_left;
-
-
+                telemetry.addData("say", "at the upper arm motor place");
+                telemetry.update();
 
                 if (upperArmMotorOut) {
                     robot.upperArmMotor.setPower(.1);
@@ -201,6 +205,25 @@ public class SkystoneTeleOp extends LinearOpMode {
 //                    //robot.intakeLeft.setPower(0);
 //                    //robot.intakeRight.setPower(0);
 //                }
+
+                clawOpen = gamepad2.a;
+                clawClose = gamepad2.y;
+                telemetry.addData("say", "at the claw place");
+                telemetry.update();
+
+                if (clawOpen) {
+                    robot.clawMotor.setPower(.1);
+                }
+                else {
+                    robot.clawMotor.setPower(0);
+                }
+
+                if (clawClose) {
+                    robot.clawMotor.setPower(-.1);
+                }
+                else {
+                    robot.clawMotor.setPower (0);
+                }
 
 
             }
