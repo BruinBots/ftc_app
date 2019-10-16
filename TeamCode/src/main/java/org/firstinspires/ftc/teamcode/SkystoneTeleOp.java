@@ -83,6 +83,9 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean upperArmMotorIn = false;
         boolean clawOpen = false;
         boolean clawClose = false;
+        boolean clawRest = true;
+        boolean capstoneOut = false;
+        boolean capstoneIn = false;
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -116,6 +119,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                     stop();
                     sleep(5000);
                 }
+
 
 //                // DRIVING SECTION!!!! ----------------------------------------------------------------
 //                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
@@ -151,78 +155,112 @@ public class SkystoneTeleOp extends LinearOpMode {
                 telemetry.addData("say", "at the lower arm motor place");
                 telemetry.update();
                 if (lowerArmMotorUp) {
-                    robot.lowerArmMotor.setPower(-.1);
-                }
-                else{
+                    robot.lowerArmMotor.setPower(1);
+                } else {
                     robot.lowerArmMotor.setPower(0);
 
                 }
 
                 if (lowerArmMotorDown) {
-                    robot.lowerArmMotor.setPower(.1);
-                }
-                else {
+                    robot.lowerArmMotor.setPower(-1);
+                } else {
                     robot.lowerArmMotor.setPower(0);
                 }
 
-                upperArmMotorOut=gamepad2.dpad_right;
-                upperArmMotorIn=gamepad2.dpad_left;
+
+                upperArmMotorOut = gamepad2.dpad_right;
+                upperArmMotorIn = gamepad2.dpad_left;
                 telemetry.addData("say", "at the upper arm motor place");
                 telemetry.update();
 
                 if (upperArmMotorOut) {
-                    robot.upperArmMotor.setPower(.1);
-                }
-                else{
+                    robot.upperArmMotor.setPower(1);
+                } else {
                     robot.upperArmMotor.setPower(0);
 
                 }
 
                 if (upperArmMotorIn) {
 
-                    robot.upperArmMotor.setPower(-.1);
-                }
-                else {
+                    robot.upperArmMotor.setPower(-1);
+                } else {
                     robot.upperArmMotor.setPower(0);
                 }
+
 
 
 //                intakeFront = gamepad2.left_bumper;
 //                intakeBack = gamepad2.right_bumper;
 //                if (intakeBack) {
-//                    //robot.intakeLeft.setPower(.1);
-//                    //robot.intakeRight.setPower(-.1);
+//                    //robot.intakeLeft.setPower(1);
+//                    //robot.intakeRight.setPower(-1);
 //                }
 //                else {
 //                    //robot.intakeLeft.setPower(0);
 //                    //robot.intakeRight.setPower(0);
 //                }
 //                if (intakeFront) {
-//                    //robot.intakeLeft.setPower(-.1);
-//                    //robot.intakeRight.setPower(.1);
+//                    //robot.intakeLeft.setPower(-1);
+//                    //robot.intakeRight.setPower(1);
 //                }
 //                else {
 //                    //robot.intakeLeft.setPower(0);
 //                    //robot.intakeRight.setPower(0);
 //                }
 
-                clawOpen = gamepad2.a;
-                clawClose = gamepad2.y;
-                telemetry.addData("say", "at the claw place");
-                telemetry.update();
+        if (gamepad2.a) {
+            clawOpen=true;
+            clawClose=false;
+            clawRest=false;
+        }
 
-                if (clawOpen) {
-                    robot.clawMotor.setPower(.1);
+        if (gamepad2.y) {
+            clawClose=true;
+            clawOpen=false;
+            clawRest=false;
+        }
+
+        if (!gamepad2.a && !gamepad2.y) {
+            clawRest=true;
+            clawOpen=false;
+            clawClose=false;
+        }
+
+        if (clawOpen) {
+            robot.clawMotor.setPower(1);
+        }
+        else {
+            if (clawClose) {
+                robot.clawMotor.setPower(-1);
+            }
+            else {
+                if (clawRest) {
+                    robot.clawMotor.setPower(.00000001);
+                    //because the servo is being dumb
                 }
-                else {
-                    robot.clawMotor.setPower(0);
+            }
+        }
+
+
+
+
+
+
+        capstoneOut = gamepad2.b;
+        capstoneIn = gamepad2.x;
+
+                if (capstoneOut) {
+                    robot.capstoneServo.setPower(1);
+                } else {
+                    robot.capstoneServo.setPower(0);
+
                 }
 
-                if (clawClose) {
-                    robot.clawMotor.setPower(-.1);
-                }
-                else {
-                    robot.clawMotor.setPower (0);
+                if (capstoneIn) {
+
+                    robot.capstoneServo.setPower(-1);
+                } else {
+                    robot.capstoneServo.setPower(0);
                 }
 
 
@@ -279,38 +317,38 @@ public class SkystoneTeleOp extends LinearOpMode {
 //            sleep(50);
         //}
     }
-    public void moveBot(double drive, double rotate, double strafe, double scaleFactor)
-    {
-        // This module takes inputs, normalizes them to DRIVE_SPEED, and drives the motors
+        public void moveBot(double drive, double rotate, double strafe, double scaleFactor)
+        {
+            // This module takes inputs, normalizes them to DRIVE_SPEED, and drives the motors
 //        robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // How to normalize...Version 3
-        //Put the raw wheel speeds into an array
-        double wheelSpeeds[] = new double[4];
-        wheelSpeeds[0] = drive + strafe - rotate;
-        wheelSpeeds[1] = drive - strafe - rotate;
-        wheelSpeeds[2] = drive - strafe + rotate;
-        wheelSpeeds[3] = drive + strafe + rotate;
-        // Find the magnitude of the first element in the array
-        double maxMagnitude = Math.abs(wheelSpeeds[0]);
-        // If any of the other wheel speeds are bigger, save that value in maxMagnitude
-        for (int i = 1; i < wheelSpeeds.length; i++)
-        {
-            double magnitude = Math.abs(wheelSpeeds[i]);
-            if (magnitude > maxMagnitude)
+            // How to normalize...Version 3
+            //Put the raw wheel speeds into an array
+            double wheelSpeeds[] = new double[4];
+            wheelSpeeds[0] = drive + strafe - rotate;
+            wheelSpeeds[1] = drive - strafe - rotate;
+            wheelSpeeds[2] = drive - strafe + rotate;
+            wheelSpeeds[3] = drive + strafe + rotate;
+            // Find the magnitude of the first element in the array
+            double maxMagnitude = Math.abs(wheelSpeeds[0]);
+            // If any of the other wheel speeds are bigger, save that value in maxMagnitude
+            for (int i = 1; i < wheelSpeeds.length; i++)
             {
-                maxMagnitude = magnitude;
+                double magnitude = Math.abs(wheelSpeeds[i]);
+                if (magnitude > maxMagnitude)
+                {
+                    maxMagnitude = magnitude;
+                }
             }
-        }
-        // Normalize all of the magnitudes to below 1
-        if (maxMagnitude > 1.0)
-        {
-            for (int i = 0; i < wheelSpeeds.length; i++)
+            // Normalize all of the magnitudes to below 1
+            if (maxMagnitude > 1.0)
             {
-                wheelSpeeds[i] /= maxMagnitude;
+                for (int i = 0; i < wheelSpeeds.length; i++)
+                {
+                    wheelSpeeds[i] /= maxMagnitude;
+                }
             }
-        }
-        // Send the normalized values to the wheels, further scaled by the user
+            // Send the normalized values to the wheels, further scaled by the user
 //        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
 //        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
 //        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
@@ -320,5 +358,5 @@ public class SkystoneTeleOp extends LinearOpMode {
 
 
 
-    }
+        }
 }

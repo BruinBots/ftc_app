@@ -77,6 +77,7 @@ public class HardwareBruinBot
 //    public CRServo    rampServoLeft = null;
 //    public CRServo    rampServoRight = null;
     public  CRServo  clawMotor = null;
+    public  CRServo  capstoneServo = null;
 
     //public DcMotor  leftIntakeMotor = null;
 //    public DcMotor  rightIntakeMotor = null;
@@ -127,6 +128,7 @@ public class HardwareBruinBot
 //        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
 
         clawMotor = hwMap.get(CRServo.class, "clawMotor");
+        capstoneServo = hwMap.get(CRServo.class, "capstoneServo");
 
 
 
@@ -179,7 +181,8 @@ public class HardwareBruinBot
 //        rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //armExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        upperArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lowerArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //armRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //armRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -193,4 +196,3 @@ public class HardwareBruinBot
 
     }
 }
-
