@@ -69,16 +69,16 @@ public class SkystoneTeleOp extends LinearOpMode {
 //        double turn;
 //        double max;
 
-//        float drive = 0;
-//        float strafe = 0;
-//        float rotate = 0;
-//        float rampUp = 0;
-//        float rampDown = 0;
+        float drive = 0;
+        float strafe = 0;
+        float rotate = 0;
+        float rampUp = 0;
+        float rampDown = 0;
 //
         boolean lowerArmMotorUp = false;
         boolean lowerArmMotorDown = false;
-//        boolean intakeFront = false;
-//        boolean intakeBack = false;
+        boolean intakeFront = false;
+        boolean intakeBack = false;
         boolean upperArmMotorOut = false;
         boolean upperArmMotorIn = false;
         boolean clawOpen = false;
@@ -121,28 +121,29 @@ public class SkystoneTeleOp extends LinearOpMode {
                 }
 
 
-//                // DRIVING SECTION!!!! ----------------------------------------------------------------
-//                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
-//                strafe = -gamepad2.left_stick_x;
-//                rotate = gamepad2.right_stick_x;
-//
-//                moveBot(drive, rotate, strafe, 0.3);
-//
-//                //RAMP SECTION
-//
-////                // Read the triggers and roll the Servos
-//                rampUp = gamepad2.right_trigger;
-//                rampDown = gamepad2.left_trigger;
-//                if (rampUp > rampDown) {
-//                    robot.rampServoRight.setPower(-rampUp);
+                // DRIVING SECTION!!!! ----------------------------------------------------------------
+                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
+                strafe = -gamepad2.left_stick_x;
+                rotate = gamepad2.right_stick_x;
+
+                moveBot(drive, rotate, strafe, 0.3);
+
+                //RAMP SECTION
+
+                // Read the triggers and roll the Servos
+                //one servo as of 10/20/19
+                rampUp = gamepad2.right_trigger;
+                rampDown = gamepad2.left_trigger;
+                if (rampUp > rampDown) {
+                    robot.rampServoRight.setPower(-rampUp);
 //                    robot.rampServoLeft.setPower(rampUp);
-//
-//                }
-//                else
-//                {
-//                    robot.rampServoRight.setPower(rampDown);
+
+                }
+                else
+                {
+                    robot.rampServoRight.setPower(rampDown);
 //                    robot.rampServoLeft.setPower(-rampDown);
-//                }
+                }
 
 //                telemetry.addData("upper arm Encoder:", robot.upperArmMotor.getCurrentPosition());
 //                telemetry.addData("lower arm Encoder:", robot.lowerArmMotor.getCurrentPosition());
@@ -189,24 +190,24 @@ public class SkystoneTeleOp extends LinearOpMode {
 
 
 
-//                intakeFront = gamepad2.left_bumper;
-//                intakeBack = gamepad2.right_bumper;
-//                if (intakeBack) {
-//                    //robot.intakeLeft.setPower(1);
-//                    //robot.intakeRight.setPower(-1);
-//                }
-//                else {
-//                    //robot.intakeLeft.setPower(0);
-//                    //robot.intakeRight.setPower(0);
-//                }
-//                if (intakeFront) {
-//                    //robot.intakeLeft.setPower(-1);
-//                    //robot.intakeRight.setPower(1);
-//                }
-//                else {
-//                    //robot.intakeLeft.setPower(0);
-//                    //robot.intakeRight.setPower(0);
-//                }
+                intakeFront = gamepad2.left_bumper;
+                intakeBack = gamepad2.right_bumper;
+                if (intakeBack) {
+                    robot.intakeLeft.setPower(1);
+                    robot.intakeRight.setPower(-1);
+                }
+                else {
+                    robot.intakeLeft.setPower(0);
+                    robot.intakeRight.setPower(0);
+                }
+                if (intakeFront) {
+                    robot.intakeLeft.setPower(-1);
+                    robot.intakeRight.setPower(1);
+                }
+                else {
+                    robot.intakeLeft.setPower(0);
+                    robot.intakeRight.setPower(0);
+                }
 
         if (gamepad2.a) {
             clawOpen=true;

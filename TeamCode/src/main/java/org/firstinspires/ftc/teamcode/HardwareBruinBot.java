@@ -63,24 +63,25 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
 public class HardwareBruinBot
 {
     /* Public OpMode members. */
-//    public DcMotor  leftFrontDrive   = null;
-//    public DcMotor  leftRearDrive = null;
-//    public DcMotor  rightFrontDrive  = null;
-//    public DcMotor  rightRearDrive = null;
+    public DcMotor  leftFrontDrive   = null;
+    public DcMotor  leftRearDrive = null;
+    public DcMotor  rightFrontDrive  = null;
+    public DcMotor  rightRearDrive = null;
 
     public DcMotor  lowerArmMotor = null;
     public DcMotor  upperArmMotor = null;
 
-    //public DcMotor intakeLeft = null;
-    //public DcMotor intakeRight = null;
+    public DcMotor intakeLeft = null;
+    public DcMotor intakeRight = null;
 
 //    public CRServo    rampServoLeft = null;
-//    public CRServo    rampServoRight = null;
+    public CRServo    rampServoRight = null;
+
     public  CRServo  clawMotor = null;
+
     public  CRServo  capstoneServo = null;
 
-    //public DcMotor  leftIntakeMotor = null;
-//    public DcMotor  rightIntakeMotor = null;
+
 //    public DcMotor  lowerArmMotor = null;
 //    public DcMotor upperArmMotor = null
 //    public CRServo    rampServo = null;
@@ -119,13 +120,14 @@ public class HardwareBruinBot
 
         lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
         upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
-        //intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
-        //intakeRight = hwMap.get(DcMotor.class, "intakeRight");
+        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
+        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
 
 
-
+//only one servo right now and it's on the right side
 //        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
-//        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
+        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
+
 
         clawMotor = hwMap.get(CRServo.class, "clawMotor");
         capstoneServo = hwMap.get(CRServo.class, "capstoneServo");
@@ -156,10 +158,12 @@ public class HardwareBruinBot
 
         // armExt = hwMap.get(DcMotor.class, "armExt"); //arm extension
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
-//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
-//        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//        leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        //uncommented, not sure if correct.
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
 
 
 
