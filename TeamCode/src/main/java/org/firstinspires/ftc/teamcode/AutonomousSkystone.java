@@ -11,11 +11,11 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 
-@Autonomous (name = "AutonomousSkystone", group = "Rohan")
+@Autonomous (name = "AutonomousSkystone", group = "Jack")
 
 public class AutonomousSkystone extends LinearOpMode {
 
-    HardwareBruinBot hwMap = new HardwareBruinBot();
+    HardwareBruinBot robot = new HardwareBruinBot();
 
     private GoldAlignDetector detector;
 
@@ -48,7 +48,7 @@ public class AutonomousSkystone extends LinearOpMode {
 
 
         //Initialize hardware;
-        hwMap.init(hardwareMap);
+        robot.init(hardwareMap);
         // Wait for the Start button to be pushed
         while (!isStarted()) {
             // Put things to do prior to start in here
@@ -56,6 +56,7 @@ public class AutonomousSkystone extends LinearOpMode {
         double fwdSpeed=0.3;  // Forward Speed, Normally 0.1
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
+        //hoping to move the robot 2 seconds forwards
         moveBot(1, 0, 0, 0.2);
         sleep(2000);
         stopBot();
@@ -267,10 +268,10 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
         }
     }
     // Send the normalized values to the wheels, further scaled by the user
-//        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
-//        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
-//        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
-//        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
+        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
+        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
+        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
+        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
 
 
 
@@ -280,9 +281,9 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
     public void stopBot()
     {
         // This function stops the robot
-        hwMap.leftFrontDrive.setPower(0);
-        hwMap.leftRearDrive.setPower(0);
-        hwMap.rightFrontDrive.setPower(0);
-        hwMap.rightRearDrive.setPower(0);
+        robot.leftFrontDrive.setPower(0);
+        robot.leftRearDrive.setPower(0);
+        robot.rightFrontDrive.setPower(0);
+        robot.rightRearDrive.setPower(0);
     }
 }

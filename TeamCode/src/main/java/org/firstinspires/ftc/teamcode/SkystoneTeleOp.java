@@ -135,15 +135,22 @@ public class SkystoneTeleOp extends LinearOpMode {
                 rampUp = gamepad2.right_trigger;
                 rampDown = gamepad2.left_trigger;
                 if (rampUp > rampDown) {
-                    robot.rampServoRight.setPower(-rampUp);
+                    robot.rampServoRight.setPower(-.5);
 //                    robot.rampServoLeft.setPower(rampUp);
+                    telemetry.addData("say", "right trigger: rampUp");
 
                 }
-                else
-                {
-                    robot.rampServoRight.setPower(rampDown);
+
+                if (rampUp < rampDown) {
+
+                    robot.rampServoRight.setPower(.5);
 //                    robot.rampServoLeft.setPower(-rampDown);
+                    telemetry.addData("say", "left trigger: rampDown");
                 }
+                if ( rampUp == rampDown) {
+                    telemetry.addData("say", "rampUp = rampDown");
+                }
+                telemetry.update();
 
 //                telemetry.addData("upper arm Encoder:", robot.upperArmMotor.getCurrentPosition());
 //                telemetry.addData("lower arm Encoder:", robot.lowerArmMotor.getCurrentPosition());
@@ -153,8 +160,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 lowerArmMotorUp = gamepad2.dpad_up;
                 lowerArmMotorDown = gamepad2.dpad_down;
-                telemetry.addData("say", "at the lower arm motor place");
-                telemetry.update();
+//                telemetry.addData("say", "at the lower arm motor place");
+//                telemetry.update();
                 if (lowerArmMotorUp) {
                     robot.lowerArmMotor.setPower(1);
                 } else {
@@ -171,8 +178,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 upperArmMotorOut = gamepad2.dpad_right;
                 upperArmMotorIn = gamepad2.dpad_left;
-                telemetry.addData("say", "at the upper arm motor place");
-                telemetry.update();
+//                telemetry.addData("say", "at the upper arm motor place");
+//                telemetry.update();
 
                 if (upperArmMotorOut) {
                     robot.upperArmMotor.setPower(1);
@@ -195,6 +202,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                 if (intakeBack) {
                     robot.intakeLeft.setPower(1);
                     robot.intakeRight.setPower(-1);
+                    telemetry.addData("say", "right bumper: intakeBack");
                 }
                 else {
                     robot.intakeLeft.setPower(0);
@@ -203,11 +211,13 @@ public class SkystoneTeleOp extends LinearOpMode {
                 if (intakeFront) {
                     robot.intakeLeft.setPower(-1);
                     robot.intakeRight.setPower(1);
+                    telemetry.addData("say", "left bumper: intakeFront");
                 }
                 else {
                     robot.intakeLeft.setPower(0);
                     robot.intakeRight.setPower(0);
                 }
+                telemetry.update();
 
         if (gamepad2.a) {
             clawOpen=true;
@@ -250,16 +260,16 @@ public class SkystoneTeleOp extends LinearOpMode {
         capstoneOut = gamepad2.b;
         capstoneIn = gamepad2.x;
 
-                if (capstoneOut) {
-                    robot.capstoneServo.setPower(1);
+                if (capstoneOut && !capstoneIn) {
+                    robot.capstoneServo.setPower(-1);
                 } else {
                     robot.capstoneServo.setPower(0);
 
                 }
 
-                if (capstoneIn) {
+                if (capstoneIn && !capstoneOut) {
 
-                    robot.capstoneServo.setPower(-1);
+                    robot.capstoneServo.setPower(1);
                 } else {
                     robot.capstoneServo.setPower(0);
                 }
@@ -350,10 +360,10 @@ public class SkystoneTeleOp extends LinearOpMode {
                 }
             }
             // Send the normalized values to the wheels, further scaled by the user
-//        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
-//        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
-//        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
-//        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
+        robot.leftFrontDrive.setPower(scaleFactor * wheelSpeeds[0]);
+        robot.leftRearDrive.setPower(scaleFactor * wheelSpeeds[1]);
+        robot.rightFrontDrive.setPower(scaleFactor * wheelSpeeds[2]);
+        robot.rightRearDrive.setPower(scaleFactor * wheelSpeeds[3]);
 
 
 

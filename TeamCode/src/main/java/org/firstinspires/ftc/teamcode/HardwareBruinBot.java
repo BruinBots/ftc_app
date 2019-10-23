@@ -113,10 +113,10 @@ public class HardwareBruinBot
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-//        leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontDrive");
-//        leftRearDrive = hwMap.get(DcMotor.class, "leftRearDrive");
-//        rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
-//        rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
+        leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontDrive");
+        leftRearDrive = hwMap.get(DcMotor.class, "leftRearDrive");
+        rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
+        rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
 
         lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
         upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
@@ -168,10 +168,10 @@ public class HardwareBruinBot
 
 
         // Set all motors to zero power
-//        leftFrontDrive.setPower(0);
-//        leftRearDrive.setPower(0);
-//        rightFrontDrive.setPower(0);
-//        rightRearDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        leftRearDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        rightRearDrive.setPower(0);
         //armExtend.setPower(0);
         //armRotate.setPower(0);
         //landerLatchLift.setPower(0);
@@ -179,10 +179,10 @@ public class HardwareBruinBot
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-//        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         upperArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
