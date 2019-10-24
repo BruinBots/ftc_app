@@ -74,8 +74,8 @@ public class HardwareBruinBot
     public DcMotor intakeLeft = null;
     public DcMotor intakeRight = null;
 
-//    public CRServo    rampServoLeft = null;
-    public CRServo    rampServoRight = null;
+    public CRServo    rampServoLeft = null;
+//    public CRServo    rampServoRight = null;
 
     public  CRServo  clawMotor = null;
 
@@ -125,8 +125,8 @@ public class HardwareBruinBot
 
 
 //only one servo right now and it's on the right side
-//        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
-        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
+        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
+//        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
 
 
         clawMotor = hwMap.get(CRServo.class, "clawMotor");

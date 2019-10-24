@@ -58,7 +58,7 @@ public class AutonomousSkystone extends LinearOpMode {
         double strafe = 0.5;  // Strafe Speed
         //hoping to move the robot 2 seconds forwards
         moveBot(1, 0, 0, 0.2);
-        sleep(2000);
+        sleep(6000);
         stopBot();
         //This loop runs until the gold mineral is found;
         //Need to change this to "while not detected" like in the GoldAlignExample program;

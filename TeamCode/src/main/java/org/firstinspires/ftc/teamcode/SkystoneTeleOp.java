@@ -135,16 +135,16 @@ public class SkystoneTeleOp extends LinearOpMode {
                 rampUp = gamepad2.right_trigger;
                 rampDown = gamepad2.left_trigger;
                 if (rampUp > rampDown) {
-                    robot.rampServoRight.setPower(-.5);
-//                    robot.rampServoLeft.setPower(rampUp);
+//                    robot.rampServoRight.setPower(-rampUp);
+                    robot.rampServoLeft.setPower(rampUp);
                     telemetry.addData("say", "right trigger: rampUp");
 
                 }
 
                 if (rampUp < rampDown) {
 
-                    robot.rampServoRight.setPower(.5);
-//                    robot.rampServoLeft.setPower(-rampDown);
+//                    robot.rampServoRight.setPower(rampDown);
+                    robot.rampServoLeft.setPower(-rampDown);
                     telemetry.addData("say", "left trigger: rampDown");
                 }
                 if ( rampUp == rampDown) {
@@ -263,16 +263,14 @@ public class SkystoneTeleOp extends LinearOpMode {
                 if (capstoneOut && !capstoneIn) {
                     robot.capstoneServo.setPower(-1);
                 } else {
-                    robot.capstoneServo.setPower(0);
-
+                    if (capstoneIn && !capstoneOut) {
+                        robot.capstoneServo.setPower(1);
+                    } else {
+                        robot.capstoneServo.setPower(0);
+                    }
                 }
 
-                if (capstoneIn && !capstoneOut) {
 
-                    robot.capstoneServo.setPower(1);
-                } else {
-                    robot.capstoneServo.setPower(0);
-                }
 
 
             }
