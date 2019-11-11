@@ -27,6 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//all the imports
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
@@ -60,6 +61,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch
  * Servo channel:  Servo to open right claw: "right_hand"
  */
 //skystone hardwaremap
+
+    //the place where all the variables are defined
 public class HardwareBruinBot
 {
     /* Public OpMode members. */
@@ -68,8 +71,16 @@ public class HardwareBruinBot
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
 
-    public DcMotor  lowerArmMotor = null;
-    public DcMotor  upperArmMotor = null;
+    public  DcMotor armExtend = null;
+
+//    public  CRServo armLift = null;
+    public  DcMotor armLift = null;
+    public Servo clawServo = null;
+    public CRServo leftPlatformServo;
+    public CRServo rightPlatformServo;
+
+//    public DcMotor  lowerArmMotor = null;
+//    public DcMotor  upperArmMotor = null;
 
     public DcMotor intakeLeft = null;
     public DcMotor intakeRight = null;
@@ -118,19 +129,31 @@ public class HardwareBruinBot
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
         rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
 
-        lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
-        upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
-        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
-        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
+        armExtend = hwMap.get(DcMotor.class, "armExtend");
+        armLift = hwMap.get(DcMotor.class, "armLift");
+        clawServo = hwMap.get(Servo.class, "clawServo");
+        leftPlatformServo = hwMap.get(CRServo.class, "leftPlatformServo");
+        rightPlatformServo = hwMap.get(CRServo.class, "rightPlatformServo");
+
+        //FIXME: commented out lower and upper arm
+//        lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
+//        upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
+
+        //FIXME: commented out intake
+//        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
+//        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
 
 
 //only one servo right now and it's on the right side
-        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
+
+        //FIXME: commented out ramp
+//        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
 //        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
 
 
-        clawMotor = hwMap.get(CRServo.class, "clawMotor");
-        capstoneServo = hwMap.get(CRServo.class, "capstoneServo");
+        //FIXME:commented out claw and capstone
+//        clawMotor = hwMap.get(CRServo.class, "clawMotor");
+//        capstoneServo = hwMap.get(CRServo.class, "capstoneServo");
 
 
 
@@ -185,14 +208,16 @@ public class HardwareBruinBot
         rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        upperArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lowerArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        upperArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        lowerArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //armRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //armRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //landerLatchLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //landerLatchLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        armLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         // Set the LED on

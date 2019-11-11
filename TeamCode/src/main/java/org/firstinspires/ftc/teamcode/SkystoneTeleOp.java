@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+//imports all important code that we need
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -51,6 +52,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+//the method that defines all of the variables in this program and translates the gamepad inputs to robot outputs
 @TeleOp(name="Teleop", group="Pushbot")
 public class SkystoneTeleOp extends LinearOpMode {
 
@@ -74,6 +76,8 @@ public class SkystoneTeleOp extends LinearOpMode {
         float rotate = 0;
         float rampUp = 0;
         float rampDown = 0;
+        float clawOpen = 0;
+        float clawClose = 0;
 //
         boolean lowerArmMotorUp = false;
         boolean lowerArmMotorDown = false;
@@ -81,11 +85,17 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean intakeBack = false;
         boolean upperArmMotorOut = false;
         boolean upperArmMotorIn = false;
-        boolean clawOpen = false;
-        boolean clawClose = false;
+
         boolean clawRest = true;
         boolean capstoneOut = false;
         boolean capstoneIn = false;
+        boolean armOut = false;
+        boolean armIn = false;
+        boolean armUp = false;
+        boolean armDown = false;
+        boolean platformServoDown = false;
+        boolean platformServoUp = false;
+
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -121,36 +131,127 @@ public class SkystoneTeleOp extends LinearOpMode {
                 }
 
 
+
                 // DRIVING SECTION!!!! ----------------------------------------------------------------
                 drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
                 strafe = -gamepad2.left_stick_x;
                 rotate = gamepad2.right_stick_x;
 
-                moveBot(drive, rotate, strafe, 0.3);
+                moveBot(drive, rotate, strafe, 0.5);
 
-                //RAMP SECTION
 
+
+                //arm extension section
+                //Dpad left moves it out and right moves it in
+                armOut = gamepad2.dpad_left;
+                armIn = gamepad2.dpad_right;
+                if (armIn) {
+                    robot.armExtend.setPower(1);
+                }
+                else {
+                    robot.armExtend.setPower(0);
+                }
+
+                if (armOut) {
+                    robot.armExtend.setPower(-1);
+                }
+                else {
+                    robot.armExtend.setPower(0);
+                }
+
+
+                //arm lifting section
+                //Dpad up moves it up and down moves it down
+                armDown = gamepad2.dpad_up;
+                armUp = gamepad2.dpad_down;
+                if (armUp) {
+                    robot.armLift.setPower(1);
+                }
+                else {
+                    robot.armLift.setPower(0);
+                }
+
+                if (armDown) {
+                    robot.armLift.setPower(-1);
+                }
+                else {
+                    robot.armLift.setPower(0);
+                }
+
+
+
+
+
+                //Claw Section
                 // Read the triggers and roll the Servos
-                //one servo as of 10/20/19
-                rampUp = gamepad2.right_trigger;
-                rampDown = gamepad2.left_trigger;
-                if (rampUp > rampDown) {
-//                    robot.rampServoRight.setPower(-rampUp);
-                    robot.rampServoLeft.setPower(rampUp);
-                    telemetry.addData("say", "right trigger: rampUp");
+                //right trigger is open and left is closed.
+                //open is 1 and close is  .1
+                clawOpen = gamepad2.right_trigger;
+                clawClose = gamepad2.left_trigger;
+                if (clawOpen > clawClose) {
+                    robot.clawServo.setPosition(1);
+                }
+                if (clawOpen < clawClose) {
+                    robot.clawServo.setPosition(.1);
+                }
+                //no = case yet
+                //testing
 
+                //platform servo section
+                //x is down and b is up
+                platformServoDown = gamepad2.x;
+                platformServoUp = gamepad2.b;
+                if (platformServoDown) {
+                    robot.rightPlatformServo.setPower(1);
+                    robot.leftPlatformServo.setPower(1);
+                }
+                else {
+                    if (platformServoUp) {
+                        robot.rightPlatformServo.setPower(-1);
+                        robot.leftPlatformServo.setPower(-1);
+                    }
+                    else {
+                        robot.rightPlatformServo.setPower(0);
+                        robot.leftPlatformServo.setPower(0);
+                    }
                 }
 
-                if (rampUp < rampDown) {
 
-//                    robot.rampServoRight.setPower(rampDown);
-                    robot.rampServoLeft.setPower(-rampDown);
-                    telemetry.addData("say", "left trigger: rampDown");
-                }
-                if ( rampUp == rampDown) {
-                    telemetry.addData("say", "rampUp = rampDown");
-                }
-                telemetry.update();
+
+
+
+
+
+
+
+
+
+
+                //FIXME: commented out ramp
+//                //RAMP SECTION
+//
+//                // Read the triggers and roll the Servos
+//                //one servo as of 10/20/19
+//                rampUp = gamepad2.right_trigger;
+//                rampDown = gamepad2.left_trigger;
+//                if (rampUp > rampDown) {
+////                    robot.rampServoRight.setPower(-rampUp);
+//                    robot.rampServoLeft.setPower(rampUp);
+//                    telemetry.addData("say", "right trigger: rampUp");
+//
+//                }
+
+                //FIXME: commented out ramp
+//                if (rampUp < rampDown) {
+//
+////                    robot.rampServoRight.setPower(rampDown);
+//                    robot.rampServoLeft.setPower(-rampDown);
+//                    telemetry.addData("say", "left trigger: rampDown");
+//                }
+//                if ( rampUp == rampDown) {
+//                    telemetry.addData("say", "rampUp = rampDown");
+//                }
+//                telemetry.update();
 
 //                telemetry.addData("upper arm Encoder:", robot.upperArmMotor.getCurrentPosition());
 //                telemetry.addData("lower arm Encoder:", robot.lowerArmMotor.getCurrentPosition());
@@ -158,122 +259,122 @@ public class SkystoneTeleOp extends LinearOpMode {
 //                telemetry.addData("lower arm Encoder:", robot.upperArmMotor.getCurrentPosition());
 
 
-                lowerArmMotorUp = gamepad2.dpad_up;
-                lowerArmMotorDown = gamepad2.dpad_down;
-//                telemetry.addData("say", "at the lower arm motor place");
+                //FIXME: commented out lower arm
+//                //LOWER ARM PLACE
+//                lowerArmMotorUp = gamepad2.dpad_up;
+//                lowerArmMotorDown = gamepad2.dpad_down;
+////                telemetry.addData("say", "at the lower arm motor place");
+////                telemetry.update();
+//                if (lowerArmMotorUp) {
+//                    robot.lowerArmMotor.setPower(1);
+//                } else {
+//                    robot.lowerArmMotor.setPower(0);
+//
+//                }
+//
+//                if (lowerArmMotorDown) {
+//                    robot.lowerArmMotor.setPower(-1);
+//                } else {
+//                    robot.lowerArmMotor.setPower(0);
+//                }
+
+                //FIXME: commented out upper arm
+//                //UPPER ARM PLACE
+//                upperArmMotorOut = gamepad2.dpad_right;
+//                upperArmMotorIn = gamepad2.dpad_left;
+////                telemetry.addData("say", "at the upper arm motor place");
+////                telemetry.update();
+//
+//                if (upperArmMotorOut) {
+//                    robot.upperArmMotor.setPower(1);
+//                } else {
+//                    robot.upperArmMotor.setPower(0);
+//
+//                }
+//
+//                if (upperArmMotorIn) {
+//
+//                    robot.upperArmMotor.setPower(-1);
+//                } else {
+//                    robot.upperArmMotor.setPower(0);
+//                }
+
+
+                //FIXME: commented out intake
+//                //INTAKE PLACE
+//                intakeFront = gamepad2.left_bumper;
+//                intakeBack = gamepad2.right_bumper;
+//                if (intakeBack) {
+//                    robot.intakeLeft.setPower(1);
+//                    robot.intakeRight.setPower(-1);
+//                    telemetry.addData("say", "right bumper: intakeBack");
+//                }
+//                else {
+//                    robot.intakeLeft.setPower(0);
+//                    robot.intakeRight.setPower(0);
+//                }
+//                if (intakeFront) {
+//                    robot.intakeLeft.setPower(-1);
+//                    robot.intakeRight.setPower(1);
+//                    telemetry.addData("say", "left bumper: intakeFront");
+//                }
+//                else {
+//                    robot.intakeLeft.setPower(0);
+//                    robot.intakeRight.setPower(0);
+//                }
 //                telemetry.update();
-                if (lowerArmMotorUp) {
-                    robot.lowerArmMotor.setPower(1);
-                } else {
-                    robot.lowerArmMotor.setPower(0);
 
-                }
-
-                if (lowerArmMotorDown) {
-                    robot.lowerArmMotor.setPower(-1);
-                } else {
-                    robot.lowerArmMotor.setPower(0);
-                }
-
-
-                upperArmMotorOut = gamepad2.dpad_right;
-                upperArmMotorIn = gamepad2.dpad_left;
-//                telemetry.addData("say", "at the upper arm motor place");
-//                telemetry.update();
-
-                if (upperArmMotorOut) {
-                    robot.upperArmMotor.setPower(1);
-                } else {
-                    robot.upperArmMotor.setPower(0);
-
-                }
-
-                if (upperArmMotorIn) {
-
-                    robot.upperArmMotor.setPower(-1);
-                } else {
-                    robot.upperArmMotor.setPower(0);
-                }
-
-
-
-                intakeFront = gamepad2.left_bumper;
-                intakeBack = gamepad2.right_bumper;
-                if (intakeBack) {
-                    robot.intakeLeft.setPower(1);
-                    robot.intakeRight.setPower(-1);
-                    telemetry.addData("say", "right bumper: intakeBack");
-                }
-                else {
-                    robot.intakeLeft.setPower(0);
-                    robot.intakeRight.setPower(0);
-                }
-                if (intakeFront) {
-                    robot.intakeLeft.setPower(-1);
-                    robot.intakeRight.setPower(1);
-                    telemetry.addData("say", "left bumper: intakeFront");
-                }
-                else {
-                    robot.intakeLeft.setPower(0);
-                    robot.intakeRight.setPower(0);
-                }
-                telemetry.update();
-
-        if (gamepad2.a) {
-            clawOpen=true;
-            clawClose=false;
-            clawRest=false;
-        }
-
-        if (gamepad2.y) {
-            clawClose=true;
-            clawOpen=false;
-            clawRest=false;
-        }
-
-        if (!gamepad2.a && !gamepad2.y) {
-            clawRest=true;
-            clawOpen=false;
-            clawClose=false;
-        }
-
-        if (clawOpen) {
-            robot.clawMotor.setPower(1);
-        }
-        else {
-            if (clawClose) {
-                robot.clawMotor.setPower(-1);
-            }
-            else {
-                if (clawRest) {
-                    robot.clawMotor.setPower(.00000001);
-                    //because the servo is being dumb
-                }
-            }
-        }
+//        if (gamepad2.a) {
+//            clawOpen=true;
+//            clawClose=false;
+//            clawRest=false;
+//        }
+//
+//        if (gamepad2.y) {
+//            clawClose=true;
+//            clawOpen=false;
+//            clawRest=false;
+//        }
+//
+//        if (!gamepad2.a && !gamepad2.y) {
+//            clawRest=true;
+//            clawOpen=false;
+//            clawClose=false;
+//        }
+//
+//        if (clawOpen) {
+//            robot.clawMotor.setPower(1);
+//        }
+//        else {
+//            if (clawClose) {
+//                robot.clawMotor.setPower(-1);
+//            }
+//            else {
+//                if (clawRest) {
+//                    robot.clawMotor.setPower(.00000001);
+//                    //because the servo is being dumb
+//                }
+//            }
+//        }
 
 
 
 
-
-
-        capstoneOut = gamepad2.b;
-        capstoneIn = gamepad2.x;
-
-                if (capstoneOut && !capstoneIn) {
-                    robot.capstoneServo.setPower(-1);
-                } else {
-                    if (capstoneIn && !capstoneOut) {
-                        robot.capstoneServo.setPower(1);
-                    } else {
-                        robot.capstoneServo.setPower(0);
-                    }
-                }
-
-
-
-
-            }
+        //FIXME: commented out capstone
+//        //CAPSTONE PLACE
+//        capstoneOut = gamepad2.b;
+//        capstoneIn = gamepad2.x;
+//
+//                if (capstoneOut && !capstoneIn) {
+//                    robot.capstoneServo.setPower(-1);
+//                } else {
+//                    if (capstoneIn && !capstoneOut) {
+//                        robot.capstoneServo.setPower(1);
+//                    } else {
+//                        robot.capstoneServo.setPower(0);
+//                    }
+                } //extra?
+//            }
 
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
@@ -325,6 +426,7 @@ public class SkystoneTeleOp extends LinearOpMode {
             // Pace this loop so jaw action is reasonable speed.
 //            sleep(50);
         //}
+        //driving things
     }
         public void moveBot(double drive, double rotate, double strafe, double scaleFactor)
         {
