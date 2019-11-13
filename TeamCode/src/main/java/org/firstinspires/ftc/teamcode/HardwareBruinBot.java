@@ -29,8 +29,13 @@
 
 //all the imports
 package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -78,6 +83,8 @@ public class HardwareBruinBot
     public Servo clawServo = null;
     public CRServo leftPlatformServo;
     public CRServo rightPlatformServo;
+
+    public BNO055IMU gyro;
 
 //    public DcMotor  lowerArmMotor = null;
 //    public DcMotor  upperArmMotor = null;
@@ -132,8 +139,24 @@ public class HardwareBruinBot
         armExtend = hwMap.get(DcMotor.class, "armExtend");
         armLift = hwMap.get(DcMotor.class, "armLift");
         clawServo = hwMap.get(Servo.class, "clawServo");
-        leftPlatformServo = hwMap.get(CRServo.class, "leftPlatformServo");
-        rightPlatformServo = hwMap.get(CRServo.class, "rightPlatformServo");
+        //leftPlatformServo = hwMap.get(Servo.class, "leftPlatformServo");
+        //rightPlatformServo = hwMap.get(Servo.class, "rightPlatformServo");
+
+        // REV IMU Setup
+
+        Orientation lastAngles = new Orientation();
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        gyro = hwMap.get(BNO055IMU.class, "gyro");
+        gyro.initialize(parameters);
 
         //FIXME: commented out lower and upper arm
 //        lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
