@@ -101,7 +101,7 @@ public class ArmEncoderTest extends LinearOpMode {
 
 
         int currentArmLiftPosition =0;  // Used to store the currently commanded arm position
-        int MAX_LIFTARM_POSITION = 70;  // ABout 120 steps from arm starting position to full extension
+        int MAX_LIFTARM_POSITION = 70;  // ABout 70 steps from arm starting position to full extension
 
         ElapsedTime runtime = new ElapsedTime();
 
@@ -130,17 +130,17 @@ public class ArmEncoderTest extends LinearOpMode {
             armDown = gamepad2.dpad_down;
             armUp = gamepad2.dpad_up;
             // Only change value if arm is near commanded value, prevents overdriving arm
-            if (abs(currentArmLiftPosition-robot.armLift.getCurrentPosition()) < 10){
+            if (abs(currentArmLiftPosition-robot.armLift.getCurrentPosition()) < 8){
                 if (armUp) {
-                    currentArmLiftPosition += 10; // Add 2 to the current arm position
+                    currentArmLiftPosition += 10; // Add 10 to the current arm position
                     if (currentArmLiftPosition > MAX_LIFTARM_POSITION) {
-                        currentArmLiftPosition = MAX_LIFTARM_POSITION;
+                        currentArmLiftPosition = MAX_LIFTARM_POSITION; // DOn't let it go highter than Max Position
                     }
                 } else {
                     if (armDown) {
-                        currentArmLiftPosition -= 10; // Subtract 2 from the current arm position
+                        currentArmLiftPosition -= 10; // Subtract 10 from the current arm position
                         if (currentArmLiftPosition < 0) {
-                            currentArmLiftPosition = 0;
+                            currentArmLiftPosition = 0;  // Don't let it go lower than 0
                         }
                     }
                 }

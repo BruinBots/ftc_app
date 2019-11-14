@@ -69,7 +69,7 @@ public class VinceAutonomous extends LinearOpMode {
         // Wait for the Start button to be pushed ----------------------------START----------------------------------------------
         while (!isStarted()) {
             // Put things to do prior to start in here
-            telemetry.addData(">", "Robot Heading = %d", getAngle());
+            telemetry.addData(">", "Robot Heading = ", getAngle());
             telemetry.update();
             if (isStopRequested()) stop();
 
