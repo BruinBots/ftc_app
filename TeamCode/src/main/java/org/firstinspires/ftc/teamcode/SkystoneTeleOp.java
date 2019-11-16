@@ -38,6 +38,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
+import static java.lang.Math.abs;
+
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
@@ -95,7 +97,8 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean armDown = false;
         boolean platformServoDown = false;
         boolean platformServoUp = false;
-
+        int currentArmLiftPosition =0;  // Used to store the currently commanded arm position
+        int MAX_LIFTARM_POSITION = 70;  // ABout 70 steps from arm starting position to full extension
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -164,6 +167,23 @@ public class SkystoneTeleOp extends LinearOpMode {
                 //Dpad up moves it up and down moves it down
                 armDown = gamepad2.dpad_up;
                 armUp = gamepad2.dpad_down;
+                // Only change value if arm is near commanded value, prevents overdriving arm.  8 seems to work...
+                if (abs(currentArmLiftPosition-robot.armLift.getCurrentPosition()) < 8){
+                    if (armUp) {
+                        currentArmLiftPosition += 10; // Add 10 to the current arm position
+                        if (currentArmLiftPosition > MAX_LIFTARM_POSITION) {
+                            currentArmLiftPosition = MAX_LIFTARM_POSITION; // DOn't let it go highter than Max Position
+                        }
+                    } else {
+                        if (armDown) {
+                            currentArmLiftPosition -= 10; // Subtract 10 from the current arm position
+                            if (currentArmLiftPosition < 0) {
+                                currentArmLiftPosition = 0;  // Don't let it go lower than 0
+                            }
+                        }
+                    }
+                }
+                /*
                 if (armUp) {
                     robot.armLift.setPower(1);
                 }
@@ -177,7 +197,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                 else {
                     robot.armLift.setPower(0);
                 }
-
+*/
 
 
 
@@ -202,17 +222,13 @@ public class SkystoneTeleOp extends LinearOpMode {
                 platformServoDown = gamepad2.x;
                 platformServoUp = gamepad2.b;
                 if (platformServoDown) {
-                    robot.rightPlatformServo.setPower(1);
-                    robot.leftPlatformServo.setPower(1);
+                    robot.rightPlatformServo.setPosition(1);
+                    robot.leftPlatformServo.setPosition(1);
                 }
                 else {
                     if (platformServoUp) {
-                        robot.rightPlatformServo.setPower(-1);
-                        robot.leftPlatformServo.setPower(-1);
-                    }
-                    else {
-                        robot.rightPlatformServo.setPower(0);
-                        robot.leftPlatformServo.setPower(0);
+                        robot.rightPlatformServo.setPosition(0);
+                        robot.leftPlatformServo.setPosition(0);
                     }
                 }
 

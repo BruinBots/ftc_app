@@ -76,13 +76,29 @@ public class VinceAutonomous extends LinearOpMode {
             sleep(10000);
 
             // Go forward until the touch sensor is triggered (maintain zero heading)
-            while(!isStopRequested() && !frontTouchSensor){
+            while(!isStopRequested() && robot.frontTouchSensor.getState()==false){
                 gyroHold(.25,0,.1);
             }
+            stopBot();
             // Latch the platform with the servos
+            robot.rightPlatformServo.setPosition(1);
+            robot.leftPlatformServo.setPosition((1));
+
             // Back up (maintian zero heading) until the rear touch sensor hits the wall
+            while (!isStopRequested() && robot.backTouchSensor.getState()==false){
+                gyroHold(-.25,0,0.1);
+            }
+            stopBot();
+
             //  Unlatch the platform with the servos
+            robot.rightPlatformServo.setPosition(-1);
+            robot.leftPlatformServo.setPosition((-1));
+
             // Strafe right (left) until we're over the line (color sensor?)
+            gyroStrafe(.5,0);
+            sleep(2000);
+            stopBot();
+            //Victory!
 /*
             //Reset the Encoder
             robot.landerLatchLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

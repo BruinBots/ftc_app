@@ -81,9 +81,10 @@ public class HardwareBruinBot
 //    public  CRServo armLift = null;
     public  DcMotor armLift = null;
     public Servo clawServo = null;
-    public CRServo leftPlatformServo;
-    public CRServo rightPlatformServo;
-
+    public Servo leftPlatformServo;
+    public Servo rightPlatformServo;
+    public DigitalChannel frontTouchSensor;
+    public DigitalChannel backTouchSensor;
     public BNO055IMU gyro;
 
 //    public DcMotor  lowerArmMotor = null;
@@ -139,9 +140,12 @@ public class HardwareBruinBot
         armExtend = hwMap.get(DcMotor.class, "armExtend");
         armLift = hwMap.get(DcMotor.class, "armLift");
         clawServo = hwMap.get(Servo.class, "clawServo");
-        //leftPlatformServo = hwMap.get(Servo.class, "leftPlatformServo");
-        //rightPlatformServo = hwMap.get(Servo.class, "rightPlatformServo");
-
+        leftPlatformServo = hwMap.get(Servo.class, "leftPlatformServo");
+        rightPlatformServo = hwMap.get(Servo.class, "rightPlatformServo");
+        frontTouchSensor = hwMap.get(DigitalChannel.class, "frontTouchSensor");
+        backTouchSensor = hwMap.get(DigitalChannel.class, "backTouchSensor");
+        //extendArmBackStop.setMode(DigitalChannel.Mode.INPUT);
+        //extendArmFrontStop.setMode(DigitalChannel.Mode.INPUT);
         // REV IMU Setup
 
         Orientation lastAngles = new Orientation();
@@ -186,10 +190,7 @@ public class HardwareBruinBot
 //right trigger to go up, left trigger to go down
         //rightMineral = hwMap.get(CRServo.class, "rightMineral");
 
-        //extendArmBackStop = hwMap.get(DigitalChannel.class, "extendArmBackStop");
-        //extendArmFrontStop = hwMap.get(DigitalChannel.class, "extendArmFrontStop");
-        //extendArmBackStop.setMode(DigitalChannel.Mode.INPUT);
-        //extendArmFrontStop.setMode(DigitalChannel.Mode.INPUT);
+
 
         // Initialize I2C Sensors
         //colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
