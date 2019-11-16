@@ -1,27 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.DogeCV;
-import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @Autonomous (name = "Vince Autonomous", group = "Team")
 public class VinceAutonomous extends LinearOpMode {
@@ -69,16 +57,28 @@ public class VinceAutonomous extends LinearOpMode {
         // Wait for the Start button to be pushed ----------------------------START----------------------------------------------
         while (!isStarted()) {
             // Put things to do prior to start in here
-            telemetry.addData(">", "Robot Heading = ", getAngle());
+            telemetry.addData("Robot Heading = ", getHeading());
             telemetry.update();
             if (isStopRequested()) stop();
 
         }
         while (opModeIsActive()) {
             // Move away from the wall a little bit
+            gyroHold(.25,0,.5);
+            stopBot();
+
             // Strafe left until we're about 5 inches from the left wall (keep zero heading)
+            gyroStrafe(-.25, 0);
+            sleep(1000);
+            stopBot();
+
             // Wait about 10 seconds
+            sleep(10000);
+
             // Go forward until the touch sensor is triggered (maintain zero heading)
+            while(!isStopRequested() && !frontTouchSensor){
+                gyroHold(.25,0,.1);
+            }
             // Latch the platform with the servos
             // Back up (maintian zero heading) until the rear touch sensor hits the wall
             //  Unlatch the platform with the servos
@@ -260,7 +260,7 @@ public class VinceAutonomous extends LinearOpMode {
             }
             //Check the error again for the next loop
             error = getError(heading);
-            telemetry.addData("Heading",getAngle());
+            telemetry.addData("Heading", getHeading());
             telemetry.update();
         }
         stopBot();
@@ -365,7 +365,7 @@ public class VinceAutonomous extends LinearOpMode {
         double robotError;
 
         // calculate error in -179 to +180 range  (
-        robotError = targetAngle - getAngle();
+        robotError = targetAngle - getHeading();
         while (robotError > 180) { robotError -= 360;}
         while (robotError <= -180) {robotError += 360;}
         return robotError;
@@ -392,13 +392,13 @@ public class VinceAutonomous extends LinearOpMode {
 
     }
 */
-    public double getAngle()
+    public double getHeading()
     {
         // Get the current heading.
 
         Orientation angles = robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double heading = angles.firstAngle;
+        double heading = (angles.firstAngle+360)%360;
 
         if (heading < -180)
             heading += 360;
