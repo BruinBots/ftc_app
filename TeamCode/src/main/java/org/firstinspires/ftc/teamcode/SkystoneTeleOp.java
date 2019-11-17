@@ -165,14 +165,14 @@ public class SkystoneTeleOp extends LinearOpMode {
                 armDown = gamepad2.dpad_up;
                 armUp = gamepad2.dpad_down;
                 if (armUp) {
-                    robot.armLift.setPower(1);
+                    robot.armLift.setPower(.5);
                 }
                 else {
                     robot.armLift.setPower(0);
                 }
 
                 if (armDown) {
-                    robot.armLift.setPower(-1);
+                    robot.armLift.setPower(-.5);
                 }
                 else {
                     robot.armLift.setPower(0);
@@ -199,24 +199,36 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 //platform servo section
                 //x is down and b is up
+//                platformServoDown = gamepad2.x;
+//                platformServoUp = gamepad2.b;
+//                if (platformServoDown) {
+//                    robot.rightPlatformServo.setPower(1);
+//                    robot.leftPlatformServo.setPower(1);
+//                }
+//                else {
+//                    if (platformServoUp) {
+//                        robot.rightPlatformServo.setPower(-1);
+//                        robot.leftPlatformServo.setPower(-1);
+//                    }
+//                    else {
+//                        robot.rightPlatformServo.setPower(0);
+//                        robot.leftPlatformServo.setPower(0);
+//                    }
+//                }
+
+                //platform servo section
+                //x is down and b is up
                 platformServoDown = gamepad2.x;
                 platformServoUp = gamepad2.b;
                 if (platformServoDown) {
-                    robot.rightPlatformServo.setPower(1);
-                    robot.leftPlatformServo.setPower(1);
-                }
-                else {
-                    if (platformServoUp) {
-                        robot.rightPlatformServo.setPower(-1);
-                        robot.leftPlatformServo.setPower(-1);
-                    }
-                    else {
-                        robot.rightPlatformServo.setPower(0);
-                        robot.leftPlatformServo.setPower(0);
-                    }
+                    robot.rightPlatformServo.setPosition(1);
+                    robot.leftPlatformServo.setPosition(1);
                 }
 
-
+                if (platformServoUp){
+                    robot.rightPlatformServo.setPosition(0);
+                    robot.leftPlatformServo.setPosition(0);
+                }
 
 
 

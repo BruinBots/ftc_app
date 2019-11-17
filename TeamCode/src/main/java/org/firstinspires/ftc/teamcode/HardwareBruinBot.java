@@ -76,8 +76,8 @@ public class HardwareBruinBot
 //    public  CRServo armLift = null;
     public  DcMotor armLift = null;
     public Servo clawServo = null;
-    public CRServo leftPlatformServo;
-    public CRServo rightPlatformServo;
+    public Servo leftPlatformServo;
+    public Servo rightPlatformServo;
 
 //    public DcMotor  lowerArmMotor = null;
 //    public DcMotor  upperArmMotor = null;
@@ -132,8 +132,8 @@ public class HardwareBruinBot
         armExtend = hwMap.get(DcMotor.class, "armExtend");
         armLift = hwMap.get(DcMotor.class, "armLift");
         clawServo = hwMap.get(Servo.class, "clawServo");
-        leftPlatformServo = hwMap.get(CRServo.class, "leftPlatformServo");
-        rightPlatformServo = hwMap.get(CRServo.class, "rightPlatformServo");
+        leftPlatformServo = hwMap.get(Servo.class, "leftPlatformServo");
+        rightPlatformServo = hwMap.get(Servo.class, "rightPlatformServo");
 
         //FIXME: commented out lower and upper arm
 //        lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
