@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous (name = "Vince Autonomous", group = "Team")
@@ -51,7 +52,7 @@ public class VinceAutonomous extends LinearOpMode {
             if (isStopRequested()) stop();
 
         }
-        if (isStopRequested()) stop();
+        if (isStopRequested()) {stop(); sleep(5000);}
 
 
         // Wait for the Start button to be pushed ----------------------------START----------------------------------------------
@@ -59,33 +60,32 @@ public class VinceAutonomous extends LinearOpMode {
             // Put things to do prior to start in here
             telemetry.addData("Robot Heading = ", getHeading());
             telemetry.update();
-            if (isStopRequested()) stop();
+            if (isStopRequested()) {stop(); sleep(5000);}
 
         }
         while (opModeIsActive()) {
             // Move away from the wall a little bit
-            gyroHold(.25,0,.5);
+            gyroHold(.25, 0, .5);
             stopBot();
 
             // Strafe left until we're about 5 inches from the left wall (keep zero heading)
-            gyroStrafe(-.25, 0);
-            sleep(1000);
+            while (!isStopRequested() && robot.rangeSensor.getDistance(DistanceUnit.INCH) > 5) {
+                gyroStrafe(-.25, 0);
+            }
             stopBot();
 
-            // Wait about 10 seconds
-            sleep(10000);
-
             // Go forward until the touch sensor is triggered (maintain zero heading)
-            while(!isStopRequested() && robot.frontTouchSensor.getState()==false){
+            while(!isStopRequested() && robot.frontTouchSensor.getState()==true){
                 gyroHold(.25,0,.1);
             }
             stopBot();
+
             // Latch the platform with the servos
             robot.rightPlatformServo.setPosition(1);
             robot.leftPlatformServo.setPosition((1));
 
             // Back up (maintian zero heading) until the rear touch sensor hits the wall
-            while (!isStopRequested() && robot.backTouchSensor.getState()==false){
+            while (!isStopRequested() && robot.backTouchSensor.getState()==true){
                 gyroHold(-.25,0,0.1);
             }
             stopBot();
@@ -94,9 +94,12 @@ public class VinceAutonomous extends LinearOpMode {
             robot.rightPlatformServo.setPosition(-1);
             robot.leftPlatformServo.setPosition((-1));
 
-            // Strafe right (left) until we're over the line (color sensor?)
-            gyroStrafe(.5,0);
-            sleep(2000);
+            // Strafe right (left) until we're over the line
+            robot.colorSensor.enableLed(true);  // Turn the LED on
+            while (!isStopRequested() && robot.colorSensor.red() < 50) {
+                gyroStrafe(.5, 0);
+            }
+            robot.colorSensor.enableLed(false); // Turn the LED off
             stopBot();
             //Victory!
 /*
@@ -183,9 +186,9 @@ public class VinceAutonomous extends LinearOpMode {
             //  Extend the arm
             while (!isStopRequested() && robot.extendArmFrontStop.getState() == false) { // As long as the front limit switch isn't pressed, move the arm forward
 
-                robot.armExtend.setPower(-0.15);
+                robot.armExtendMotor.setPower(-0.15);
             }
-            robot.armExtend.setPower(0);  // Otherwise set the power to zero
+            robot.armExtendMotor.setPower(0);  // Otherwise set the power to zero
             if (isStopRequested()) {stop(); sleep(5000);}
 
             break;
@@ -390,24 +393,7 @@ public class VinceAutonomous extends LinearOpMode {
     public double getSteer(double error, double PCoeff) {
         return Range.clip(error * PCoeff, -1, 1);
     }
-/*
-    public double sonarDistance (){
-        // Returns distance from the sonar sensor over an average of 4 values
-        // Trying to get around noise in the sensor
-        // 110 is the scaling factor between voltage and distance in INCHES
-        // based on data collected on 11/17/2018
-        double average;
-        average = robot.sonarSensor.getVoltage();
-        sleep(1);
-        average = average + robot.sonarSensor.getVoltage();
-        sleep(1);
-        average = average + robot.sonarSensor.getVoltage();
-        sleep(1);
-        average = average + robot.sonarSensor.getVoltage();
-        return (average*110)/4;
 
-    }
-*/
     public double getHeading()
     {
         // Get the current heading.
@@ -422,6 +408,22 @@ public class VinceAutonomous extends LinearOpMode {
             heading -= 360;
 
         return heading;
+
+    }
+    public double sonarDistance (){
+        // Returns distance from the sonar sensor over an average of 4 values
+        // Trying to get around noise in the sensor
+        // 110 is the scaling factor between voltage and distance in INCHES
+        // based on data collected on 11/17/2018
+        double average;
+        average = robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        return (average*110)/4;
 
     }
 }

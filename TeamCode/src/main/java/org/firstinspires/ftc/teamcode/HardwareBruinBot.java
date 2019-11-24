@@ -30,41 +30,17 @@
 //all the imports
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
-/**
- * This is NOT an opmode.
- *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
- * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
- * This hardware class assumes the following device names have been configured on the robot:
- * Note:  All names are lower case and some have single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
- * Motor channel:  Manipulator drive motor:  "left_arm"
- * Servo channel:  Servo to open left claw:  "left_hand"
- * Servo channel:  Servo to open right claw: "right_hand"
- */
 //skystone hardwaremap
 
     //the place where all the variables are defined
@@ -75,42 +51,22 @@ public class HardwareBruinBot
     public DcMotor  leftRearDrive = null;
     public DcMotor  rightFrontDrive  = null;
     public DcMotor  rightRearDrive = null;
+    public DcMotor armExtendMotor = null;
+    public DcMotor armLiftMotor = null;
 
-    public  DcMotor armExtend = null;
-
-//    public  CRServo armLift = null;
-    public  DcMotor armLift = null;
     public Servo clawServo = null;
     public Servo leftPlatformServo;
     public Servo rightPlatformServo;
+    public  Servo  capstoneServo = null;
+
     public DigitalChannel frontTouchSensor;
     public DigitalChannel backTouchSensor;
+
     public BNO055IMU gyro;
 
-//    public DcMotor  lowerArmMotor = null;
-//    public DcMotor  upperArmMotor = null;
-
-    public DcMotor intakeLeft = null;
-    public DcMotor intakeRight = null;
-
-    public CRServo    rampServoLeft = null;
-//    public CRServo    rampServoRight = null;
-
-    public  CRServo  clawMotor = null;
-
-    public  CRServo  capstoneServo = null;
-
-
-//    public DcMotor  lowerArmMotor = null;
-//    public DcMotor upperArmMotor = null
-//    public CRServo    rampServo = null;
-//    public DigitalChannel extendArmBackStop;
-//    public DigitalChannel extendArmFrontStop;
-
-//    public ModernRoboticsI2cRangeSensor rangeSensor;
-//    public ColorSensor colorSensor;
-//    public AnalogInput sonarSensor;
-
+    public ModernRoboticsI2cRangeSensor rangeSensor;
+    public ColorSensor colorSensor;
+    public AnalogInput sonarSensor;
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
@@ -118,12 +74,11 @@ public class HardwareBruinBot
     public static final double ARM_EXT_SERVO   =  0.5 ; //this must be changed later
 
     /* local OpMode members. */
-        HardwareMap hwMap           =  null;
+    HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
     public HardwareBruinBot(){
-
     }
 
     /* Initialize standard Hardware interfaces */
@@ -137,115 +92,58 @@ public class HardwareBruinBot
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontDrive");
         rightRearDrive = hwMap.get(DcMotor.class, "rightRearDrive");
 
-        armExtend = hwMap.get(DcMotor.class, "armExtend");
-        armLift = hwMap.get(DcMotor.class, "armLift");
+        armExtendMotor = hwMap.get(DcMotor.class, "armExtendMotor");
+        armLiftMotor = hwMap.get(DcMotor.class, "armLiftMotor");
+
+        //Initialize Servos
         clawServo = hwMap.get(Servo.class, "clawServo");
         leftPlatformServo = hwMap.get(Servo.class, "leftPlatformServo");
         rightPlatformServo = hwMap.get(Servo.class, "rightPlatformServo");
+        capstoneServo = hwMap.get(Servo.class, "capstoneServo");
+
+        // Touch Sensors
         frontTouchSensor = hwMap.get(DigitalChannel.class, "frontTouchSensor");
         backTouchSensor = hwMap.get(DigitalChannel.class, "backTouchSensor");
-        //extendArmBackStop.setMode(DigitalChannel.Mode.INPUT);
-        //extendArmFrontStop.setMode(DigitalChannel.Mode.INPUT);
+        frontTouchSensor.setMode(DigitalChannel.Mode.INPUT);
+        backTouchSensor.setMode(DigitalChannel.Mode.INPUT);
+
         // REV IMU Setup
-
-        Orientation lastAngles = new Orientation();
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
         parameters.mode                = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled      = false;
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
         gyro = hwMap.get(BNO055IMU.class, "gyro");
         gyro.initialize(parameters);
 
-        //FIXME: commented out lower and upper arm
-//        lowerArmMotor = hwMap.get(DcMotor.class, "lowerArmMotor");
-//        upperArmMotor = hwMap.get(DcMotor.class, "upperArmMotor");
+        //Initialize I2C Sensors
+        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
 
-        //FIXME: commented out intake
-//        intakeLeft = hwMap.get(DcMotor.class, "intakeLeft");
-//        intakeRight = hwMap.get(DcMotor.class, "intakeRight");
+        //Initialize Analog Sonar Sensor
+        sonarSensor = hwMap.get(AnalogInput.class,"sonarSensor");
 
-
-//only one servo right now and it's on the right side
-
-        //FIXME: commented out ramp
-//        rampServoLeft = hwMap.get(CRServo.class, "rampServoLeft");
-//        rampServoRight = hwMap.get(CRServo.class, "rampServoRight");
-
-
-        //FIXME:commented out claw and capstone
-//        clawMotor = hwMap.get(CRServo.class, "clawMotor");
-//        capstoneServo = hwMap.get(CRServo.class, "capstoneServo");
-
-
-
-        //landerLatchLift = hwMap.get(DcMotor.class, "landerLatchLift");
-        //armExtend = hwMap.get(DcMotor.class, "armExtend");
-        //armRotate = hwMap.get(DcMotor.class, "armRotate");
-//right trigger to go up, left trigger to go down
-        //rightMineral = hwMap.get(CRServo.class, "rightMineral");
-
-
-
-        // Initialize I2C Sensors
-        //colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-        //rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
-        //we are using the gyro from rev expansion hub
-        //FIXME figure out how to use gyro from hub
-        //gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
-
-        // Initialize Analog Sonar Sensor
-        //sonarSensor = hwMap.get(AnalogInput.class,"sonarSensor");
-
-
-        // armExt = hwMap.get(DcMotor.class, "armExt"); //arm extension
-        //leftArm    = hwMap.get(DcMotor.class, "left_arm");
-
-        //uncommented, not sure if correct.
+        //set drive motor directions
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
 
-
-
-        // Set all motors to zero power
+        // Set drive motors to zero power
         leftFrontDrive.setPower(0);
         leftRearDrive.setPower(0);
         rightFrontDrive.setPower(0);
         rightRearDrive.setPower(0);
-        //armExtend.setPower(0);
-        //armRotate.setPower(0);
-        //landerLatchLift.setPower(0);
 
-
-        // Set all motors to run without encoders.
+        // Set drive motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //armExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        upperArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        lowerArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //armRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //armRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //landerLatchLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //landerLatchLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        armLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-        // Set the LED on
-        //colorSensor.enableLed(true);
+        // make lifting motor brake when not in use
+        armLiftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 }

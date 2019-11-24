@@ -241,9 +241,9 @@
 ////        //  Turn 180 and deploy the arm
 ////        while(robot.extendArmFrontStop.getState() == false) { // As long as the front limit switch isn't pressed, move the arm forward
 ////
-////            robot.armExtend.setPower(-0.15);
+////            robot.armExtendMotor.setPower(-0.15);
 ////        }
-////            robot.armExtend.setPower(0);  // Otherwise set the power to zero
+////            robot.armExtendMotor.setPower(0);  // Otherwise set the power to zero
 ////
 ////}
 ////

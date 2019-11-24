@@ -30,13 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 //imports all important code that we need
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 import static java.lang.Math.abs;
 
@@ -119,9 +115,6 @@ public class SkystoneTeleOp extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // run until the end of the match (driver presses STOP)
-        //while (opModeIsActive()) {
-
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
                 // Telemetry Section ------------------------------------------------------------------
@@ -149,26 +142,25 @@ public class SkystoneTeleOp extends LinearOpMode {
                 armOut = gamepad2.dpad_left;
                 armIn = gamepad2.dpad_right;
                 if (armIn) {
-                    robot.armExtend.setPower(1);
+                    robot.armExtendMotor.setPower(1);
                 }
                 else {
-                    robot.armExtend.setPower(0);
+                    robot.armExtendMotor.setPower(0);
                 }
 
                 if (armOut) {
-                    robot.armExtend.setPower(-1);
+                    robot.armExtendMotor.setPower(-1);
                 }
                 else {
-                    robot.armExtend.setPower(0);
+                    robot.armExtendMotor.setPower(0);
                 }
-
 
                 //arm lifting section
                 //Dpad up moves it up and down moves it down
                 armDown = gamepad2.dpad_up;
                 armUp = gamepad2.dpad_down;
                 // Only change value if arm is near commanded value, prevents overdriving arm.  8 seems to work...
-                if (abs(currentArmLiftPosition-robot.armLift.getCurrentPosition()) < 8){
+                if (abs(currentArmLiftPosition-robot.armLiftMotor.getCurrentPosition()) < 8){
                     if (armUp) {
                         currentArmLiftPosition += 10; // Add 10 to the current arm position
                         if (currentArmLiftPosition > MAX_LIFTARM_POSITION) {
@@ -185,17 +177,17 @@ public class SkystoneTeleOp extends LinearOpMode {
                 }
                 /*
                 if (armUp) {
-                    robot.armLift.setPower(1);
+                    robot.armLiftMotor.setPower(1);
                 }
                 else {
-                    robot.armLift.setPower(0);
+                    robot.armLiftMotor.setPower(0);
                 }
 
                 if (armDown) {
-                    robot.armLift.setPower(-1);
+                    robot.armLiftMotor.setPower(-1);
                 }
                 else {
-                    robot.armLift.setPower(0);
+                    robot.armLiftMotor.setPower(0);
                 }
 */
 
@@ -232,6 +224,13 @@ public class SkystoneTeleOp extends LinearOpMode {
                     }
                 }
 
+                // Capstone servo section
+                // Pressing Y will dump the capstone then reset
+                if (gamepad2.y){
+                    robot.capstoneServo.setPosition(1);
+                    sleep(300);
+                    robot.capstoneServo.setPosition(0);
+                }
 
 
 

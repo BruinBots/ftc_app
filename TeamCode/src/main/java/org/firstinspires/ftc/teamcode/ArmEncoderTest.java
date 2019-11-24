@@ -30,14 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 //imports all important code that we need
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 import static java.lang.Math.abs;
 
@@ -111,7 +107,7 @@ public class ArmEncoderTest extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        robot.armLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         // Send telemetry message to signify robot waiting;
@@ -130,7 +126,7 @@ public class ArmEncoderTest extends LinearOpMode {
             armDown = gamepad2.dpad_down;
             armUp = gamepad2.dpad_up;
             // Only change value if arm is near commanded value, prevents overdriving arm
-            if (abs(currentArmLiftPosition-robot.armLift.getCurrentPosition()) < 8){
+            if (abs(currentArmLiftPosition-robot.armLiftMotor.getCurrentPosition()) < 8){
                 if (armUp) {
                     currentArmLiftPosition += 10; // Add 10 to the current arm position
                     if (currentArmLiftPosition > MAX_LIFTARM_POSITION) {
@@ -146,10 +142,10 @@ public class ArmEncoderTest extends LinearOpMode {
                 }
             }
             telemetry.addData("Current Commanded Pos: ",currentArmLiftPosition);
-            telemetry.addData("Actual Pos: ",robot.armLift.getCurrentPosition());
-            robot.armLift.setTargetPosition(currentArmLiftPosition);
-            robot.armLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.armLift.setPower(.2);
+            telemetry.addData("Actual Pos: ",robot.armLiftMotor.getCurrentPosition());
+            robot.armLiftMotor.setTargetPosition(currentArmLiftPosition);
+            robot.armLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.armLiftMotor.setPower(.2);
             telemetry.update();
         }
 
