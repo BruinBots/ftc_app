@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.HardwareBruinBot;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -57,7 +59,15 @@ public class AutonomousSkystone extends LinearOpMode {
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
 
-//        Drag platform
+
+//        strafe left until 5 inches of wall.
+        while (robot.rangeSensor.getDistance(DistanceUnit.INCH)>=5) {
+            //find gyrostrafe
+            moveBot(0,1,0,.2);
+        }
+        stopBot();
+
+
 //        Move forward until the front touch sensor is pressed
 //        while (robot.frontTouchSensor.getState()) {
             moveBot(-1, 0, 0, .2);
@@ -80,6 +90,11 @@ public class AutonomousSkystone extends LinearOpMode {
         robot.rightPlatformServo.setPosition(0);
         robot.leftPlatformServo.setPosition(0);
         sleep(2000);
+
+//        Strafe
+        moveBot(0,0,1,.2);
+        sleep(2000);
+        stopBot();
 
         //hoping to move the robot 2 seconds forwards
 //        moveBot(1, 0, 0, 0.2);
