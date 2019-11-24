@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 //imports all important code that we need
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static java.lang.Math.abs;
@@ -94,7 +95,7 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean platformServoDown = false;
         boolean platformServoUp = false;
         int currentArmLiftPosition =0;  // Used to store the currently commanded arm position
-        int MAX_LIFTARM_POSITION = 70;  // ABout 70 steps from arm starting position to full extension
+        int MAX_LIFTARM_POSITION = 150;  // ABout 70 steps from arm starting position to full extension
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -129,7 +130,7 @@ public class SkystoneTeleOp extends LinearOpMode {
 
 
                 // DRIVING SECTION!!!! ----------------------------------------------------------------
-                drive = gamepad2.left_stick_y;// Negative because the gamepad is weird
+                drive = gamepad2.left_stick_y;// Negatieve because the gamepad is weird
                 strafe = -gamepad2.left_stick_x;
                 rotate = gamepad2.right_stick_x;
 
@@ -175,6 +176,13 @@ public class SkystoneTeleOp extends LinearOpMode {
                         }
                     }
                 }
+
+                telemetry.addData("Current Commanded Pos: ",currentArmLiftPosition);
+                telemetry.addData("Actual Pos: ",robot.armLiftMotor.getCurrentPosition());
+                robot.armLiftMotor.setTargetPosition(currentArmLiftPosition);
+                robot.armLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.armLiftMotor.setPower(.2);
+                telemetry.update();
                 /*
                 if (armUp) {
                     robot.armLiftMotor.setPower(1);
@@ -227,9 +235,12 @@ public class SkystoneTeleOp extends LinearOpMode {
                 // Capstone servo section
                 // Pressing Y will dump the capstone then reset
                 if (gamepad2.y){
-                    robot.capstoneServo.setPosition(1);
-                    sleep(300);
                     robot.capstoneServo.setPosition(0);
+                    sleep(600);
+                    robot.capstoneServo.setPosition(.8);
+                }
+                else {
+                    robot.capstoneServo.setPosition(.8);
                 }
 
 

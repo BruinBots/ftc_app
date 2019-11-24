@@ -56,10 +56,35 @@ public class AutonomousSkystone extends LinearOpMode {
         double fwdSpeed=0.3;  // Forward Speed, Normally 0.1
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
+
+//        Drag platform
+//        Move forward until the front touch sensor is pressed
+//        while (robot.frontTouchSensor.getState()) {
+            moveBot(-1, 0, 0, .2);
+            sleep(2000);
+//        }
+     stopBot();
+
+//        Clamp latches
+        robot.rightPlatformServo.setPosition(1);
+        robot.leftPlatformServo.setPosition(1);
+        sleep(2000);
+
+//        Move back until the back touch sensor is pressed
+//        while (robot.backTouchSensor.getState()) {
+            moveBot(1,0,0,.2);
+            sleep(2000);
+//        }
+      stopBot();
+//        Release latches
+        robot.rightPlatformServo.setPosition(0);
+        robot.leftPlatformServo.setPosition(0);
+        sleep(2000);
+
         //hoping to move the robot 2 seconds forwards
-        moveBot(1, 0, 0, 0.2);
-        sleep(4000);
-        stopBot();
+//        moveBot(1, 0, 0, 0.2);
+//        sleep(4000);
+//        stopBot();
         //This loop runs until the gold mineral is found;
         //Need to change this to "while not detected" like in the GoldAlignExample program;
 //        double detectorCt = 0;  // Used to make sure the robot has settled on a heading
