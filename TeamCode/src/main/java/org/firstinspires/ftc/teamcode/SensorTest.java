@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-@TeleOp(name = "Sensor Test", group = "Team")
+@TeleOp(name = "Sensor Test", group = "Pushbot")
 public class SensorTest extends LinearOpMode {
 
     HardwareBruinBot robot = new HardwareBruinBot();
@@ -94,7 +94,7 @@ public class SensorTest extends LinearOpMode {
 
         Orientation angles = robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double heading = (angles.firstAngle+360)%360;
+        double heading = -(angles.firstAngle+360)%360;
 
         if (heading < -180)
             heading += 360;
