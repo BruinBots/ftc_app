@@ -400,7 +400,7 @@ public class VinceAutonomous extends LinearOpMode {
 
         Orientation angles = robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double heading = (angles.firstAngle+360)%360;
+        double heading = -(angles.firstAngle+360)%360;
 
         if (heading < -180)
             heading += 360;
