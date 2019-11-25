@@ -210,7 +210,7 @@ public class AutonomousSkystone extends LinearOpMode {
             hwMap.rightFrontDrive.setPower(0.1); //= drive - strafe - rotate;
             hwMap.rightRearDrive.setPower(0.1); //= drive + strafe - rotate;
         sleep(1000);*/
-           stopBot();
+//           stopBot();
 //           detector.disable();
         //hwMap.leftFrontDrive.setPower(0);
         //hwMap.leftRearDrive.setPower(0);
