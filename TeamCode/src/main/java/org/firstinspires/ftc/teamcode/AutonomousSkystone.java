@@ -69,10 +69,10 @@ public class AutonomousSkystone extends LinearOpMode {
 
 
 //        Move forward until the front touch sensor is pressed
-//        while (robot.frontTouchSensor.getState()) {
+        while (robot.frontTouchSensor.getState()) {
             moveBot(-1, 0, 0, .2);
-            sleep(2000);
-//        }
+//            sleep(2000);
+        }
      stopBot();
 
 //        Clamp latches
