@@ -63,7 +63,7 @@ public class SensorTest extends LinearOpMode {
             telemetry.addData("Front Touch Sensor: ", robot.frontTouchSensor.getState());
             telemetry.addData("Front Touch Sensor: ", robot.backTouchSensor.getState());
             telemetry.addData("Sonar Sensor (in): ", sonarDistance());
-            telemetry.addData("Range Sensor (in): ", robot.rangeSensor.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Range Sensor (in): ", rangeSensor());
             telemetry.addData("Color Sensor Red: ", robot.colorSensor.red());
             telemetry.addData("Color Sensor Blue: ", robot.colorSensor.blue());
             telemetry.update();
@@ -78,7 +78,7 @@ public class SensorTest extends LinearOpMode {
             telemetry.addData("Front Touch Sensor: ", robot.frontTouchSensor.getState());
             telemetry.addData("Front Touch Sensor: ", robot.backTouchSensor.getState());
             telemetry.addData("Sonar Sensor (in): ", sonarDistance());
-            telemetry.addData("Range Sensor (in): ", robot.rangeSensor.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Range Sensor (in): ", rangeSensor());
             telemetry.addData("Color Sensor Red: ", robot.colorSensor.red());
             telemetry.addData("Color Sensor Blue: ", robot.colorSensor.blue());
             telemetry.update();
@@ -117,8 +117,19 @@ public class SensorTest extends LinearOpMode {
         average = average + robot.sonarSensor.getVoltage();
         sleep(1);
         average = average + robot.sonarSensor.getVoltage();
-        return (average*110)/4;
+        return (average*75);
 
+    }
+    public double rangeSensor (){
+        double average;
+        average = robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        if (average>=6) {
+            average = average;
+        }
+        else {
+            average = average*1.1;
+        }
+        return average;
     }
 }
 

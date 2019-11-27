@@ -61,7 +61,7 @@ public class AutonomousSkystone extends LinearOpMode {
 
 
 //        strafe left until 5 inches of wall.
-        while (robot.rangeSensor.getDistance(DistanceUnit.INCH)>=5) {
+        while (robot.rangeSensor.getDistance(DistanceUnit.INCH)>=6) {
             //find gyrostrafe
             moveBot(0,1,0,.2);
         }
@@ -81,10 +81,10 @@ public class AutonomousSkystone extends LinearOpMode {
         sleep(2000);
 
 //        Move back until the back touch sensor is pressed
-//        while (robot.backTouchSensor.getState()) {
+        while (robot.backTouchSensor.getState()) {
             moveBot(1,0,0,.2);
             sleep(2000);
-//        }
+        }
       stopBot();
 //        Release latches
         robot.rightPlatformServo.setPosition(0);
