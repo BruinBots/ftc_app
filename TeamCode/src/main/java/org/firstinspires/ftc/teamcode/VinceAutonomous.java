@@ -53,7 +53,7 @@ public class VinceAutonomous extends LinearOpMode {
 
         }
         if (isStopRequested()) {stop(); sleep(5000);}
-
+        robot.colorSensor.enableLed(false);
 
         // Wait for the Start button to be pushed ----------------------------START----------------------------------------------
         while (!isStarted()) {
@@ -70,13 +70,13 @@ public class VinceAutonomous extends LinearOpMode {
 
             // Strafe left until we're about 5 inches from the left wall (keep zero heading)
             while (!isStopRequested() && robot.rangeSensor.getDistance(DistanceUnit.INCH) > 5) {
-                gyroStrafe(-.25, 0);
+                gyroStrafe(.3, 0);
             }
             stopBot();
 
             // Go forward until the touch sensor is triggered (maintain zero heading)
             while(!isStopRequested() && robot.frontTouchSensor.getState()==true){
-                gyroHold(.25,0,.1);
+                gyroHold(-.3,0,.1);
             }
             stopBot();
 
@@ -86,7 +86,7 @@ public class VinceAutonomous extends LinearOpMode {
 
             // Back up (maintian zero heading) until the rear touch sensor hits the wall
             while (!isStopRequested() && robot.backTouchSensor.getState()==true){
-                gyroHold(-.25,0,0.1);
+                gyroHold(.3,0,0.1);
             }
             stopBot();
 
@@ -95,9 +95,9 @@ public class VinceAutonomous extends LinearOpMode {
             robot.leftPlatformServo.setPosition((-1));
 
             // Strafe right (left) until we're over the line
-            robot.colorSensor.enableLed(true);  // Turn the LED on
+            //robot.colorSensor.enableLed(true);  // Turn the LED on
             while (!isStopRequested() && robot.colorSensor.red() < 50) {
-                gyroStrafe(.5, 0);
+                gyroStrafe(-.5, 0);
             }
             robot.colorSensor.enableLed(false); // Turn the LED off
             stopBot();
