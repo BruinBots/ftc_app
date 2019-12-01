@@ -134,7 +134,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                 strafe = -gamepad2.left_stick_x;
                 rotate = gamepad2.right_stick_x;
 
-                moveBot(drive, rotate, strafe, 0.5);
+                moveBot(drive, rotate, strafe, 0.3);
 
 
 

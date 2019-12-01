@@ -61,16 +61,16 @@ public class AutonomousSkystone extends LinearOpMode {
 
 
 //        strafe left until 5 inches of wall.
-        while (robot.rangeSensor.getDistance(DistanceUnit.INCH)>=6) {
+        while (rangeSensor()>=5) {
             //find gyrostrafe
-            moveBot(0,1,0,.2);
+            moveBot(0,0,1,.4);
         }
         stopBot();
 
 
 //        Move forward until the front touch sensor is pressed
         while (robot.frontTouchSensor.getState()) {
-            moveBot(-1, 0, 0, .2);
+            moveBot(-1, 0, 0, .4);
 //            sleep(2000);
         }
      stopBot();
@@ -78,11 +78,11 @@ public class AutonomousSkystone extends LinearOpMode {
 //        Clamp latches
         robot.rightPlatformServo.setPosition(1);
         robot.leftPlatformServo.setPosition(1);
-        sleep(2000);
+        sleep(1000);
 
 //        Move back until the back touch sensor is pressed
         while (robot.backTouchSensor.getState()) {
-            moveBot(1,0,0,.2);
+            moveBot(1,0,0,.4);
             sleep(2000);
         }
       stopBot();
@@ -92,7 +92,7 @@ public class AutonomousSkystone extends LinearOpMode {
         sleep(2000);
 
 //        Strafe
-        moveBot(0,0,1,.2);
+        moveBot(0,0,1,.4);
         sleep(2000);
         stopBot();
 
@@ -326,4 +326,43 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
         robot.rightFrontDrive.setPower(0);
         robot.rightRearDrive.setPower(0);
     }
+
+    public double sonarDistance (){
+        // Returns distance from the sonar sensor over an average of 4 values
+        // Trying to get around noise in the sensor
+        // 75 is the scaling factor between voltage and distance in INCHES
+        // based on data collected on 11/17/2018
+        double average;
+        average = robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        sleep(1);
+        average = average + robot.sonarSensor.getVoltage();
+        return (average*75);
+    }
+
+
+    public double rangeSensor (){
+        double average;
+        average = robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        average = average/4;
+
+        //the sensor is reasonably accurate before 6 inches
+        //1.1 comes from having the slope being 1.1 from data collected
+        if (average > 6) {
+            average = average * 1.1;
+        }
+
+        return average;
+    }
 }
+
+

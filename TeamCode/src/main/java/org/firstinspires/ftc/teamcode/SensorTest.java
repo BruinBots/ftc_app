@@ -107,7 +107,7 @@ public class SensorTest extends LinearOpMode {
     public double sonarDistance (){
         // Returns distance from the sonar sensor over an average of 4 values
         // Trying to get around noise in the sensor
-        // 110 is the scaling factor between voltage and distance in INCHES
+        // 75 is the scaling factor between voltage and distance in INCHES
         // based on data collected on 11/17/2018
         double average;
         average = robot.sonarSensor.getVoltage();
@@ -118,17 +118,26 @@ public class SensorTest extends LinearOpMode {
         sleep(1);
         average = average + robot.sonarSensor.getVoltage();
         return (average*75);
-
     }
+
+
     public double rangeSensor (){
         double average;
         average = robot.rangeSensor.getDistance(DistanceUnit.INCH);
-        if (average>=6) {
-            average = average;
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        sleep(1);
+        average = average + robot.rangeSensor.getDistance(DistanceUnit.INCH);
+        average = average/4;
+
+        //the sensor is reasonably accurate before 6 inches
+        //1.1 comes from having the slope being 1.1 from data collected
+        if (average > 6) {
+            average = average * 1.1;
         }
-        else {
-            average = average*1.1;
-        }
+
         return average;
     }
 }
