@@ -23,6 +23,9 @@ public class AutonomousSkystone extends LinearOpMode {
 
     HardwareBruinBot robot = new HardwareBruinBot();
 
+
+
+
     private GoldAlignDetector detector;
 
     private ElapsedTime     runtime = new ElapsedTime();
@@ -65,6 +68,8 @@ public class AutonomousSkystone extends LinearOpMode {
         double fwdSpeed=0.3;  // Forward Speed, Normally 0.1
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
+
+
 
         moveBot(-1,0,0,.2);
         sleep(500);
@@ -427,7 +432,69 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
         }
 
 
+    /**
+     *  Method to obtain & hold a heading for a finite amount of time
+     *  Move will stop once the requested time has elapsed
+     *
+     * @param speed      Desired speed of turn.
+     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                   If a relative angle is required, add/subtract from current heading.
 
-}
+     */
+
+    public void gyroHoldStopOnTouch( double speed, double angle) {
+        // This function drives on a specified heading until the touch sensor is pressed
+        double error;
+        double PCoeff = 0.01;
+        // keep looping while we have time remaining.
+
+        while (robot.backTouchSensor.getState()) {
+            // Update telemetry & Allow time for other processes to run.
+            //error = Range.clip(getError(angle),-0.3,0.3);
+            error = PCoeff * getError(angle);
+            moveBot(speed, error, 0, 0.2);
+        }
+
+        //stop all motion
+        stopBot();
+    }
+
+
+
+    /**
+     *  Method to obtain & hold a heading for a finite amount of time
+     *  Move will stop once the requested time has elapsed
+     *
+     * @param speed      Desired speed of turn.
+     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                   If a relative angle is required, add/subtract from current heading.
+     * @param holdTime   Length of time (in seconds) to hold the specified heading.
+     */
+
+    public void gyroHold( double speed, double angle, double holdTime) {
+        // This function drives on a specified heading for a given time
+        // Time is in seconds!!!!!
+        ElapsedTime holdTimer = new ElapsedTime();
+        double error;
+        double PCoeff = 0.01;
+        // keep looping while we have time remaining.
+        holdTimer.reset();
+        while ((!isStopRequested() && holdTimer.time() < holdTime)) {
+            // Update telemetry & Allow time for other processes to run.
+            //error = Range.clip(getError(angle),-0.3,0.3);
+            error = PCoeff * getError(angle);
+            moveBot(speed, error, 0, 0.3);
+        }
+
+        //stop all motion
+        stopBot();
+    }
+
+
+
+
+    }
 
 
