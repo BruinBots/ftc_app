@@ -85,6 +85,7 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean upperArmMotorOut = false;
         boolean upperArmMotorIn = false;
 
+        boolean drivespeed = true;
         boolean clawRest = true;
         boolean capstoneOut = false;
         boolean capstoneIn = false;
@@ -95,7 +96,10 @@ public class SkystoneTeleOp extends LinearOpMode {
         boolean platformServoDown = false;
         boolean platformServoUp = false;
         int currentArmLiftPosition =0;  // Used to store the currently commanded arm position
-        int MAX_LIFTARM_POSITION = 150;  // ABout 70 steps from arm starting position to full extension
+        int MAX_LIFTARM_POSITION = 600;  // ABout 70 steps from arm starting position to full extension
+
+
+
 
 
         ElapsedTime runtime = new ElapsedTime();
@@ -108,6 +112,9 @@ public class SkystoneTeleOp extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+
+        //reset the encoder
+        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -134,7 +141,31 @@ public class SkystoneTeleOp extends LinearOpMode {
                 strafe = -gamepad2.left_stick_x;
                 rotate = gamepad2.right_stick_x;
 
-                moveBot(drive, rotate, strafe, 0.3);
+
+
+                if (gamepad2.a) {
+                    if (drivespeed) {
+                        drivespeed = false;
+                        sleep(10);
+                        telemetry.addData("say", "SPEED");
+                    }
+                     else if (!drivespeed)  {
+                         drivespeed = true;
+                         sleep(10);
+                         telemetry.addData("say", "not speed");
+                     }
+
+                }
+                telemetry.update();
+
+                if (drivespeed) {
+                    moveBot(drive, rotate, strafe, 0.3);
+
+                }
+                else if (!drivespeed) {
+                    moveBot(drive,rotate,strafe,0.6);
+                }
+
 
 
 
@@ -158,8 +189,8 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 //arm lifting section
                 //Dpad up moves it up and down moves it down
-                armDown = gamepad2.dpad_up;
-                armUp = gamepad2.dpad_down;
+                armDown = gamepad2.dpad_down;
+                armUp = gamepad2.dpad_up;
                 // Only change value if arm is near commanded value, prevents overdriving arm.  8 seems to work...
                 if (abs(currentArmLiftPosition-robot.armLiftMotor.getCurrentPosition()) < 8){
                     if (armUp) {
@@ -170,8 +201,8 @@ public class SkystoneTeleOp extends LinearOpMode {
                     } else {
                         if (armDown) {
                             currentArmLiftPosition -= 10; // Subtract 10 from the current arm position
-                            if (currentArmLiftPosition < 0) {
-                                currentArmLiftPosition = 0;  // Don't let it go lower than 0
+                            if (currentArmLiftPosition < -30) {
+                                currentArmLiftPosition = -30;  // Don't let it go lower than 0
                             }
                         }
                     }
@@ -181,7 +212,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                 telemetry.addData("Actual Pos: ",robot.armLiftMotor.getCurrentPosition());
                 robot.armLiftMotor.setTargetPosition(currentArmLiftPosition);
                 robot.armLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.armLiftMotor.setPower(.2);
+                robot.armLiftMotor.setPower(1);
                 telemetry.update();
                 /*
                 if (armUp) {

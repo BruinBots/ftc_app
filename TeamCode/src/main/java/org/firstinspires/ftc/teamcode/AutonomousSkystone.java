@@ -2,7 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.HardwareBruinBot;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -26,6 +30,9 @@ public class AutonomousSkystone extends LinearOpMode {
     //public boolean isAligned() { return detector.getAligned(); }
     //public double getX() { return detector.getXPosition(); }
     public void runOpMode () {
+
+
+
 
 //        telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 //
@@ -370,6 +377,57 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
 
         return average;
     }
+
+
+    public void gyroStrafe ( double speed, double heading) {
+        // This function will strafe the robot at a given speed while holding a heading
+
+        double error = getError(heading);
+        double deadband = 3;
+        error = getError(heading);
+        if (error < 0 && Math.abs(error) > deadband) {
+            // Nagative error greater than 5 degrees, left of desired heading, input positive rotation
+            moveBot(0, -.25, speed, 0.6);
+        } else if (error > 0 && Math.abs(error) > deadband) {
+            // Positive Error greater than 5 degrees, right of desired heading, input negative rotation
+            moveBot(0, 0.25, speed, 0.6);
+        } else {
+            // Robot is on course
+            moveBot(0, 0, speed, 0.6);
+        }
+    }
+
+        public double getError(double targetAngle) {
+
+            double robotError;
+
+            // calculate error in -179 to +180 range  (
+            robotError = targetAngle - getHeading();
+            while (robotError > 180) { robotError -= 360;}
+            while (robotError <= -180) {robotError += 360;}
+            return robotError;
+        }
+
+
+        public double getHeading()
+        {
+            // Get the current heading.
+
+            Orientation angles = robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+            double heading = -(angles.firstAngle+360)%360;
+
+            if (heading < -180)
+                heading += 360;
+            else if (heading > 180)
+                heading -= 360;
+
+            return heading;
+
+        }
+
+
+
 }
 
 
