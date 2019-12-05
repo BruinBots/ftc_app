@@ -96,11 +96,9 @@ public class AutonomousSkystone extends LinearOpMode {
         sleep(1000);
 
 //        Move back until the back touch sensor is pressed
-        while (robot.backTouchSensor.getState()) {
-            moveBot(1,0,0,.2);
-            sleep(2000);
-        }
-      stopBot();
+        gyroHoldStopOnTouch(1,0);
+        stopBot();
+
 //        Release latches
         robot.rightPlatformServo.setPosition(0);
         robot.leftPlatformServo.setPosition(0);
@@ -111,8 +109,8 @@ public class AutonomousSkystone extends LinearOpMode {
 //        stopBot();
 
 //        Strafe
-        moveBot(0,0,-1,.4);
-        sleep(3500);
+//        gyroStrafe(-.5,0);
+        gyroHoldStrafe(0, 0, -1, 3.5);
         stopBot();
 
         //hoping to move the robot 2 seconds forwards
@@ -446,10 +444,13 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
     public void gyroHoldStopOnTouch( double speed, double angle) {
         // This function drives on a specified heading until the touch sensor is pressed
         double error;
-        double PCoeff = 0.01;
+        double PCoeff = 0.1;
         // keep looping while we have time remaining.
 
         while (robot.backTouchSensor.getState()) {
+
+            telemetry.addData("say", "gyrohold for the touch sensor");
+            telemetry.update();
             // Update telemetry & Allow time for other processes to run.
             //error = Range.clip(getError(angle),-0.3,0.3);
             error = PCoeff * getError(angle);
@@ -486,6 +487,37 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
             //error = Range.clip(getError(angle),-0.3,0.3);
             error = PCoeff * getError(angle);
             moveBot(speed, error, 0, 0.3);
+        }
+
+        //stop all motion
+        stopBot();
+    }
+
+
+    /**
+     *  Method to obtain & hold a heading for a finite amount of time
+     *  Move will stop once the requested time has elapsed
+     *
+     * @param speed      Desired speed of turn.
+     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                   If a relative angle is required, add/subtract from current heading.
+     * @param holdTime   Length of time (in seconds) to hold the specified heading.
+     */
+
+    public void gyroHoldStrafe( double speed, double angle, double strafe, double holdTime) {
+        // This function drives on a specified heading for a given time
+        // Time is in seconds!!!!!
+        ElapsedTime holdTimer = new ElapsedTime();
+        double error;
+        double PCoeff = 0.1;
+        // keep looping while we have time remaining.
+        holdTimer.reset();
+        while ((!isStopRequested() && holdTimer.time() < holdTime)) {
+            // Update telemetry & Allow time for other processes to run.
+            //error = Range.clip(getError(angle),-0.3,0.3);
+            error = PCoeff * getError(angle);
+            moveBot(speed, error, strafe, 0.3);
         }
 
         //stop all motion
