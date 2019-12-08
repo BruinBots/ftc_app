@@ -194,13 +194,13 @@ public class SkystoneTeleOp extends LinearOpMode {
                 // Only change value if arm is near commanded value, prevents overdriving arm.  8 seems to work...
                 if (abs(currentArmLiftPosition-robot.armLiftMotor.getCurrentPosition()) < 8){
                     if (armUp) {
-                        currentArmLiftPosition += 10; // Add 10 to the current arm position
+                        currentArmLiftPosition += 20; // Add 10 to the current arm position
                         if (currentArmLiftPosition > MAX_LIFTARM_POSITION) {
                             currentArmLiftPosition = MAX_LIFTARM_POSITION; // DOn't let it go highter than Max Position
                         }
                     } else {
                         if (armDown) {
-                            currentArmLiftPosition -= 10; // Subtract 10 from the current arm position
+                            currentArmLiftPosition -= 15; // Subtract 10 from the current arm position
                             if (currentArmLiftPosition < -30) {
                                 currentArmLiftPosition = -30;  // Don't let it go lower than 0
                             }

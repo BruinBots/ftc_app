@@ -71,6 +71,9 @@ public class AutonomousSkystone extends LinearOpMode {
 
 
 
+        sleep(10000);
+
+
         moveBot(-1,0,0,.2);
         sleep(500);
         stopBot();
@@ -110,7 +113,7 @@ public class AutonomousSkystone extends LinearOpMode {
 
 //        Strafe
 //        gyroStrafe(-.5,0);
-        gyroHoldStrafe(0, 0, -1, 3.5);
+        gyroHoldStrafe(0, 0, -1, 4);
         stopBot();
 
         //hoping to move the robot 2 seconds forwards
@@ -523,6 +526,11 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
         //stop all motion
         stopBot();
     }
+
+
+
+
+
 
 
 
