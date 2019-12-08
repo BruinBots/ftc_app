@@ -17,9 +17,9 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 
-@Autonomous (name = "AutonomousSkystone", group = "Jack")
+@Autonomous (name = "BlueBuildFull", group = "Jack")
 
-public class AutonomousSkystone extends LinearOpMode {
+public class BlueBuildFull extends LinearOpMode {
 
     HardwareBruinBot robot = new HardwareBruinBot();
 
