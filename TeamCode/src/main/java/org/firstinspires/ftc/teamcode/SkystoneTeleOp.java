@@ -175,6 +175,7 @@ public class SkystoneTeleOp extends LinearOpMode {
                 armIn = gamepad2.dpad_right;
                 if (armIn) {
                     robot.armExtendMotor.setPower(1);
+                    telemetry.addData("armExtend Position", robot.armExtendMotor.getCurrentPosition());
                 }
                 else {
                     robot.armExtendMotor.setPower(0);
@@ -182,10 +183,12 @@ public class SkystoneTeleOp extends LinearOpMode {
 
                 if (armOut) {
                     robot.armExtendMotor.setPower(-1);
+                    telemetry.addData("armExtend Position", robot.armExtendMotor.getCurrentPosition());
                 }
                 else {
                     robot.armExtendMotor.setPower(0);
                 }
+                telemetry.update();
 
                 //arm lifting section
                 //Dpad up moves it up and down moves it down
