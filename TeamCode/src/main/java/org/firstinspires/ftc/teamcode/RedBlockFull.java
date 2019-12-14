@@ -12,9 +12,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous (name = "BlueBlockFull", group = "Jack")
+@Autonomous (name = "RedBlockFull", group = "Jack")
 
-public class BlueBlockFull extends LinearOpMode {
+public class RedBlockFull extends LinearOpMode {
 
     HardwareBruinBot robot = new HardwareBruinBot();
 
@@ -105,7 +105,7 @@ public class BlueBlockFull extends LinearOpMode {
         //back up
 
         moveBot(1,0,0,.2);
-        sleep(100);
+        sleep(500);
         stopBot();
 
         robot.armExtendMotor.setPower(.5);
@@ -116,7 +116,7 @@ public class BlueBlockFull extends LinearOpMode {
 
         //strafe left
 
-        gyroHoldStrafe(0,0,1,8);
+        gyroHoldStrafe(0,0,-1, 8);
         stopBot();
 
         //drive to platform
@@ -147,7 +147,7 @@ public class BlueBlockFull extends LinearOpMode {
 
         //park on line
 
-        gyroHoldStrafe(0,0,-1,3.5);  // strafe -1 drives right, 1 drives left
+        gyroHoldStrafe(0,0,1,4);  // strafe -1 drives right, 1 drives left
         stopBot();
 
 
