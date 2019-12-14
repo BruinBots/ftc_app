@@ -53,7 +53,7 @@ import static java.lang.Math.abs;
 
 //the method that defines all of the variables in this program and translates the gamepad inputs to robot outputs
 @TeleOp(name="Teleop", group="Pushbot")
-public class SkystoneTeleOp extends LinearOpMode {
+public class SkystoneTeleOpWithoutReset extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareBruinBot robot           = new HardwareBruinBot();   // Use a Pushbot's hardware
@@ -114,7 +114,7 @@ public class SkystoneTeleOp extends LinearOpMode {
         robot.init(hardwareMap);
 
 //        reset the encoder
-        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //

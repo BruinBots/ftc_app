@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.HardwareBruinBot;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.disnodeteam.dogecv.CameraViewDisplay;
@@ -61,6 +62,9 @@ public class BlueBuildFull extends LinearOpMode {
 
         //Initialize hardware;
         robot.init(hardwareMap);
+
+        //reset the encoder
+        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Wait for the Start button to be pushed
         while (!isStarted()) {
             // Put things to do prior to start in here
@@ -68,6 +72,10 @@ public class BlueBuildFull extends LinearOpMode {
         double fwdSpeed=0.3;  // Forward Speed, Normally 0.1
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
+
+        //put them into a known position
+        robot.rightPlatformServo.setPosition(.1);
+        robot.leftPlatformServo.setPosition(.1);
 
 
 

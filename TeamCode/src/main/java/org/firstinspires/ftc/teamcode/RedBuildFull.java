@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -55,6 +56,9 @@ public class RedBuildFull extends LinearOpMode {
 
         //Initialize hardware;
         robot.init(hardwareMap);
+
+        //reset the encoder
+        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Wait for the Start button to be pushed
         while (!isStarted()) {
             // Put things to do prior to start in here
@@ -63,6 +67,10 @@ public class RedBuildFull extends LinearOpMode {
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
 
+
+        //put them into a known position
+        robot.rightPlatformServo.setPosition(.1);
+        robot.leftPlatformServo.setPosition(.1);
 
 
         sleep(10000);

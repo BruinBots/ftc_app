@@ -56,6 +56,9 @@ public class BlueBlockFull extends LinearOpMode {
 
         //Initialize hardware;
         robot.init(hardwareMap);
+
+        //reset the encoder
+        robot.armLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Wait for the Start button to be pushed
         while (!isStarted()) {
             // Put things to do prior to start in here
@@ -64,6 +67,10 @@ public class BlueBlockFull extends LinearOpMode {
         double rotate = 0.2; // Rotation Speed
         double strafe = 0.5;  // Strafe Speed
 
+
+        //put them into a known position
+        robot.rightPlatformServo.setPosition(.1);
+        robot.leftPlatformServo.setPosition(.1);
 
 
         //lift arm a little bit
@@ -149,6 +156,16 @@ public class BlueBlockFull extends LinearOpMode {
 
         gyroHoldStrafe(0,0,-1,3.5);  // strafe -1 drives right, 1 drives left
         stopBot();
+
+
+//        robot.armLiftMotor.setTargetPosition(-30);
+//        robot.armLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.armLiftMotor.setPower(1);
+//
+//
+//        robot.armExtendMotor.setPower(.5);
+//        sleep(250);
+//        robot.armExtendMotor.setPower(0);
 
 
         //hoping to move the robot 2 seconds forwards
