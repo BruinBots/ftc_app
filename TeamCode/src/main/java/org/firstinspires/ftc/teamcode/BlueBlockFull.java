@@ -105,8 +105,14 @@ public class BlueBlockFull extends LinearOpMode {
         //back up
 
         moveBot(1,0,0,.2);
-        sleep(1000);
+        sleep(100);
         stopBot();
+
+        robot.armExtendMotor.setPower(.5);
+        sleep(1500);
+        robot.armExtendMotor.setPower(0);
+
+
 
         //strafe left
 
@@ -116,7 +122,7 @@ public class BlueBlockFull extends LinearOpMode {
         //drive to platform
 
         while (robot.frontTouchSensor.getState()) {
-            moveBot(-1, 0, 0, .2);
+            moveBot(-1, 0, 0, .2); // 1 drives backwards, -1 drives forward
         }
         stopBot();
 
@@ -125,9 +131,23 @@ public class BlueBlockFull extends LinearOpMode {
         robot.clawServo.setPosition(1);
         //we might want to grab the platform to drag it back if the other team is a brick
 
+
+        robot.armLiftMotor.setTargetPosition(300);
+        robot.armLiftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armLiftMotor.setPower(1);
+
+
+//        robot.armExtendMotor.setPower(.5);
+//        sleep(1500);
+//        robot.armExtendMotor.setPower(0);
+
+        moveBot(1,0,0,.2); // 1 drives backwards, -1 drives forwards
+        sleep(900);
+        stopBot();
+
         //park on line
 
-        gyroHoldStrafe(1,0,0,2000);
+        gyroHoldStrafe(0,0,-1,2.5);  // strafe -1 drives right, 1 drives left
         stopBot();
 
 
@@ -523,6 +543,8 @@ public void moveBot(double drive, double rotate, double strafe, double scaleFact
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
 
+
+    //holdtime is in seconds
     public void gyroHoldStrafe( double speed, double angle, double strafe, double holdTime) {
         // This function drives on a specified heading for a given time
         // Time is in seconds!!!!!
